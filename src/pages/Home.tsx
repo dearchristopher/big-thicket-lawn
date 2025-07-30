@@ -1,3 +1,4 @@
+import { Bar } from "./components/bar";
 import { Contact } from "./components/Contact";
 import { HeroLogo } from "./components/hero-logo";
 import { Quote } from "./components/Quote";
@@ -22,20 +23,29 @@ export default function Home() {
           <p className="text-xl md:text-2xl mb-8 font-medium font-main">
             Family-Owned Lawn Care in Lumberton, TX
           </p>
-          <div className="flex flex-wrap justify-center gap-8 mb-8 text-lg">
-            <div className="flex items-center gap-2">
-              <span className="text-green-400">✓</span>
-              <span>Mowing</span>
+          <div className='flex flex-col mb-8 gap-1'>
+            <div className="flex flex-wrap justify-center gap-8 text-lg bg-teal-700 rounded-xl p-4">
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span>Mowing</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span>Trimming</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span>Landscaping</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span>Cleanups</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-400">✓</span>
-              <span>Trimming</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-400">✓</span>
-              <span>Cleanups</span>
-            </div>
+
+            <Bar color="yellow-400" />
           </div>
+
           <button onClick={() => window.location.href = "#contact"} className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors">
             Contact Us
           </button>
