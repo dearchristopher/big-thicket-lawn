@@ -1,5 +1,6 @@
-import { Mower, PineTreeIcon } from "../../components/icons"
+
 import { useState, useEffect } from "react";
+import { MowerTreeIcon } from "../../components/icons/MowerTree";
 
 export const HeroLogo = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -23,38 +24,32 @@ export const HeroLogo = () => {
     }, []);
 
     return (
-        <h1 className="text-9xl font-bold mb-4 tracking-wider font-stable">
+        <h1 className="text-4xl sm:text-6xl lg:text-9xl font-bold mb-4 tracking-wider font-stable">
             <span
-                className={`font-decorative tracking-tighter flex flex-col items-center pb-2 transition-all duration-700 ease-out ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}
-                style={{ lineHeight: '95px' }}
+                className={`font-decorative tracking-tighter flex flex-col items-center pb-2 transition-all duration-700 ease-out leading-[40px] sm:leading-[60px] lg:leading-[95px] ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}
             >
                 <p>BIG</p>
                 <p>THICKET</p>
             </span>
-            <div className='relative'>
-                <div className="absolute top-0 right-0" >
-                    <Mower
-                        className={`w-72 h-72 fill-green-900 absolute left-[-170px] top-[-135px] transition-all duration-700 ease-out ${showIcons ? 'opacity-100 transform translate-x-0' : 'opacity-0 transform translate-x-10'}`}
-                    />
-                    <PineTreeIcon
-                        className={`w-46 h-46 fill-green-900 absolute top-[-30px] right-[320px] transition-all duration-700 ease-out ${showIcons ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-10'}`}
-                    />
-                    <PineTreeIcon
-                        className={`w-52 h-52 fill-green-900 absolute top-[-55px] right-[365px] transition-all duration-700 ease-out ${showIcons ? 'opacity-100 transform translate-y-0 delay-200' : 'opacity-0 transform translate-y-10'}`}
-                    />
+            <div className='relative w-full'>
+                <div className="pb-6">
+                    <div className="flex flex-col gap-[2px] sm:gap-[3px] lg:gap-1 w-full px-2 sm:px-8 lg:px-12">
+                        <div className="absolute inset-0 flex items-center justify-center px-2 sm:px-8 lg:px-12 z-10">
+                            <MowerTreeIcon className={`h-28 sm:h-32 lg:h-42 xl:h-52 fill-green-900 stroke-white stroke-[10px] transition-all duration-700 ease-out ${showIcons ? 'opacity-100' : 'opacity-0 translate-y-2'}`} />
+                        </div>
+                        {['bg-red-600', 'bg-orange-400', 'bg-yellow-400', 'bg-teal-700', 'bg-green-900'].map((color, index) => (
+                            <div
+                                key={color}
+                                className={`h-3 sm:h-4 lg:h-5 xl:h-6 rounded-full ${color} transition-all duration-500 ease-out ${showBars ? 'opacity-100 w-full' : 'opacity-0 w-0'}`}
+                                style={{ transitionDelay: `${index * 100}ms` }}
+                            ></div>
+                        ))}
+                    </div>
                 </div>
-                <div className="flex flex-col items-center gap-[4px] mb-6 w-full">
-                    {['bg-red-600', 'bg-orange-400', 'bg-yellow-400', 'bg-teal-700', 'bg-green-900'].map((color, index) => (
-                        <div
-                            key={color}
-                            className={`h-8 rounded-full ${color} transition-all duration-500 ease-out ${showBars ? 'opacity-100 w-full' : 'opacity-0 w-0'}`}
-                            style={{ transitionDelay: `${index * 100}ms` }}
-                        ></div>
-                    ))}
-                </div>
-                <div className="flex flex-col items-center gap-1">
+
+                <div className="flex flex-col items-center gap-1 px-4 sm:px-0">
                     <span
-                        className={`text-6xl font-main tracking-tight transition-all duration-700 ease-out ${showTitle ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-10'}`}
+                        className={`text-2xl sm:text-4xl lg:text-6xl font-main tracking-tight transition-all duration-700 ease-out text-center ${showTitle ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-10'}`}
                     >
                         LAWN SERVICES
                     </span>
