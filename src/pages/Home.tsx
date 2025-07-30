@@ -1,4 +1,6 @@
+import { Contact } from "./components/Contact";
 import { HeroLogo } from "./components/hero-logo";
+import { Quote } from "./components/Quote";
 
 export default function Home() {
   return (
@@ -34,8 +36,8 @@ export default function Home() {
               <span>Cleanups</span>
             </div>
           </div>
-          <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors">
-            Get a Free Quote
+          <button onClick={() => window.location.href = "#contact"} className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors">
+            Contact Us
           </button>
         </div>
       </div>
@@ -51,7 +53,7 @@ export default function Home() {
               </div>
               <div className="space-y-4 text-lg text-gray-700">
                 <p>
-                  We're a local family business offering reliable, affordable lawn care with attention to detail.
+                  We're a local family-owned business offering reliable, affordable lawn care with attention to detail.
                 </p>
                 <p className="font-semibold text-green-700">
                   Serving Southeast Texas with pride.
@@ -117,77 +119,8 @@ export default function Home() {
       <div id="contact" className="bg-yellow-50 py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="bg-white shadow-lg rounded-lg p-8">
-              <h3 className="text-2xl font-bold text-red-600 mb-6 text-center font-futura">GET A FREE QUOTE</h3>
-              <form className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-                <select className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                  <option>Address</option>
-                  <option>Lumberton, TX</option>
-                  <option>Beaumont, TX</option>
-                  <option>Other</option>
-                </select>
-                <textarea
-                  placeholder="Services Needed"
-                  rows={3}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                ></textarea>
-                <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-bold transition-colors">
-                  SEND REQUEST
-                </button>
-              </form>
-            </div>
-            <div className="bg-white shadow-lg rounded-lg p-8 flex flex-col items-center">
-              <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-bold text-red-600 font-main">GET IN TOUCH</h3>
-              </div>
-
-              <div className="space-y-6">
-                <div className="text-center">
-                  <p className="text-lg text-gray-700 mb-4 font-semibold">Need something else?</p>
-                  <p className="text-gray-600">We're here to help with all your lawn care needs!</p>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
-                    <div className="text-green-700 text-2xl">📱</div>
-                    <div>
-                      <p className="text-sm text-gray-600 uppercase tracking-wide font-semibold">Call Us</p>
-                      <a
-                        href="tel:14097193979"
-                        className="text-lg font-bold text-green-700 hover:text-green-800 transition-colors font-main"
-                      >
-                        (409)719-3979
-                        {/* does this trigger */}
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
-                    <div className="text-green-700 text-2xl">✉️</div>
-                    <div>
-                      <p className="text-sm text-gray-600 uppercase tracking-wide font-semibold">Email Us</p>
-                      <a
-                        href="mailto:contact@bigthicketlawn.com"
-                        className="text-lg font-bold text-green-700 hover:text-green-800 transition-colors font-main break-all"
-                      >
-                        contact@bigthicketlawn.com
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-center pt-4 border-t border-gray-200">
-                  <p className="text-sm text-gray-500 font-semibold">
-                    🌲 Family-owned & operated in Southeast Texas
-                  </p>
-                </div>
-              </div>
-            </div>
+            <Quote />
+            <Contact />
           </div>
         </div>
       </div>

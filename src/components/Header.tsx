@@ -19,7 +19,7 @@ export const Header = () => {
     const linkStyle = "hover:text-green-200 text-white transition-colors font-semibold capitalize";
 
     return (
-        <nav className="sticky top-0 z-50 bg-green-700 text-white p-4 shadow-lg">
+        <nav className="sticky top-0 z-50 bg-green-700 text-white px-8 py-4 shadow-lg">
             <div className="flex justify-between items-center w-full">
                 <div className="flex gap-4">
                     <Link to="/" className={linkStyle}>
