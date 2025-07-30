@@ -9,9 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "svg-to-component": "svgr --out-dir src/components/icons --typescript --ref --memo",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "svg-to-component": "svgr --out-dir src/components/icons --typescript --ref --memo"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
