@@ -10,7 +10,6 @@ export const HeroLogo = () => {
     const [showTitle, setShowTitle] = useState(false);
 
     useEffect(() => {
-        // Stagger the animations
         const timer1 = setTimeout(() => setIsVisible(true), 100);
         const timer2 = setTimeout(() => setShowIcons(true), 800);
         const timer3 = setTimeout(() => setShowBars(true), 100);

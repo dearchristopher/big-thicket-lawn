@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FooterMower } from "./HeaderMower";
 import { MowerTreeIcon } from "./icons/MowerTree";
-import { Heart } from "lucide-react";
+import { Heart, Mail, Phone, TreeDeciduous } from "lucide-react";
 
 export const Footer = () => {
     return (
@@ -48,19 +48,19 @@ export const Footer = () => {
                         <h3 className="text-xl font-bold mb-4 font-decorative">Contact Us</h3>
                         <div className="space-y-2">
                             <p className="flex items-center gap-2">
-                                <span className="text-green-300">📱</span>
+                                <span className="text-green-300"><Phone className='h-3 w-3  ' /></span>
                                 <a href="tel:14097193979" className="text-green-200 hover:text-white transition-colors">
                                     (409) 719-3979
                                 </a>
                             </p>
                             <p className="flex items-center gap-2">
-                                <span className="text-green-300">✉️</span>
+                                <span className="text-green-300"><Mail className='h-3 w-3 ' /></span>
                                 <a href="mailto:contact@bigthicketlawn.com" className="text-green-200 hover:text-white transition-colors">
                                     contact@bigthicketlawn.com
                                 </a>
                             </p>
                             <p className="flex items-center gap-2">
-                                <span className="text-green-300">📍</span>
+                                <span className="text-green-300"><TreeDeciduous className='h-3 w-3' /></span>
                                 <span className="text-green-200">Lumberton, TX</span>
                             </p>
                         </div>
