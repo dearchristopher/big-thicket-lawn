@@ -111,30 +111,7 @@ export default function Home() {
       <div id="contact" className="bg-yellow-50 py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Left Form */}
-            <div className="bg-white rounded-lg p-8 border-4 border-red-600">
-              <h3 className="text-2xl font-bold text-red-600 mb-6 text-center font-futura">GET A FREE QUOTE</h3>
-              <form className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Address"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-                <textarea
-                  placeholder="Services Needed"
-                  rows={4}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                ></textarea>
-              </form>
-            </div>
-
-            {/* Right Form */}
-            <div className="bg-orange-200 rounded-lg p-8">
+            <div className="bg-white shadow-lg rounded-lg p-8">
               <h3 className="text-2xl font-bold text-red-600 mb-6 text-center font-futura">GET A FREE QUOTE</h3>
               <form className="space-y-4">
                 <input
@@ -157,6 +134,52 @@ export default function Home() {
                   SEND REQUEST
                 </button>
               </form>
+            </div>
+            <div className="bg-white shadow-lg rounded-lg p-8 flex flex-col items-center">
+              <div className="flex items-center gap-4 mb-6">
+                <h3 className="text-2xl font-bold text-red-600 font-main">GET IN TOUCH</h3>
+              </div>
+
+              <div className="space-y-6">
+                <div className="text-center">
+                  <p className="text-lg text-gray-700 mb-4 font-semibold">Need something else?</p>
+                  <p className="text-gray-600">We're here to help with all your lawn care needs!</p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                    <div className="text-green-700 text-2xl">📱</div>
+                    <div>
+                      <p className="text-sm text-gray-600 uppercase tracking-wide font-semibold">Call Us</p>
+                      <a
+                        href="tel:14097193979"
+                        className="text-lg font-bold text-green-700 hover:text-green-800 transition-colors font-main"
+                      >
+                        (409)719-3979
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                    <div className="text-green-700 text-2xl">✉️</div>
+                    <div>
+                      <p className="text-sm text-gray-600 uppercase tracking-wide font-semibold">Email Us</p>
+                      <a
+                        href="mailto:contact@bigthicketlawn.com"
+                        className="text-lg font-bold text-green-700 hover:text-green-800 transition-colors font-main break-all"
+                      >
+                        contact@bigthicketlawn.com
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-center pt-4 border-t border-gray-200">
+                  <p className="text-sm text-gray-500 font-semibold">
+                    🌲 Family-owned & operated in Southeast Texas
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
