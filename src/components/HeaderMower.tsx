@@ -13,13 +13,10 @@ export const HeaderMower = () => {
 }
 
 export const FooterMower = () => {
-    return (<div className="flex items-center relative">
+    return (<div className="flex items-center justify-between w-full">
         <div className="flex flex-col gap-0 items-center">
             <span className="font-decorative text-xl">BIG THICKET</span>
             <span className="font-main text-xs tracking-wide">LAWN SERVICES</span>
-        </div>
-        <div>
-            <MowerTreeIcon className="w-12 h-12 fill-white absolute top-[6px] left-[-45px]" />
         </div>
     </div>)
 }

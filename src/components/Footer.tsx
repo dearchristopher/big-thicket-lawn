@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { FooterMower } from "./HeaderMower";
+import { MowerTreeIcon } from "./icons/MowerTree";
 
 export const Footer = () => {
     return (
         <footer className="bg-green-800 text-white py-12 px-8">
             <div className="max-w-6xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="flex flex-col items-center md:items-start">
-                        <Link to="/" className="mb-4">
+                    <div className="flex flex-col">
+                        <Link to="/" className="mb-4 w-full">
                             <FooterMower />
                         </Link>
                         <p className="text-green-200 text-sm mt-2">
@@ -65,7 +66,10 @@ export const Footer = () => {
                     </div>
                 </div>
 
-                <div className="border-t border-green-700 mt-8 pt-8 text-center text-green-300 text-sm">
+                <div className="border-t border-green-700 mt-8 pt-8 text-center text-green-300 text-sm flex flex-col items-center">
+                    <div>
+                        <MowerTreeIcon className="w-12 h-12 fill-green-300" />
+                    </div>
                     <p>&copy; {new Date().getFullYear()} Big Thicket Lawn Services. All rights reserved.</p>
                 </div>
             </div>
