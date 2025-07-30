@@ -1,16 +1,22 @@
+import { HeroLogo } from "./components/hero-logo";
+
 export default function Home() {
   return (
     <div className="min-h-screen">
       <div
         className="relative h-screen bg-cover bg-center flex items-center justify-center bg-green-900"
+        style={{
+          backgroundImage: "url('/src/assets/lawn-placeholder.png')",
+        }}
       >
-        <div className="text-center text-white px-4">
-          <h1 className="text-9xl font-bold mb-4 tracking-wider font-stable">
-            <div className="flex flex-col gap-1">
-              <span className="font-decorative tracking-tighter">BIG THICKET</span>
-              <span className="text-6xl font-main tracking-tight">LAWN SERVICES</span>
-            </div>
-          </h1>
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.6) 100%)'
+          }}
+        ></div>
+        <div className="relative text-center text-white px-4 z-10">
+          <HeroLogo />
           <p className="text-xl md:text-2xl mb-8 font-medium font-main">
             Family-Owned Lawn Care in Lumberton, TX
           </p>
