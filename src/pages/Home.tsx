@@ -8,7 +8,7 @@ export default function Home() {
       <div
         className="relative h-screen bg-cover bg-center flex items-center justify-center bg-green-900"
         style={{
-          backgroundImage: "url('/src/assets/lawn-placeholder.png')",
+          backgroundImage: "url('public/lawn-placeholder.png')",
         }}
       >
         <div
@@ -63,7 +63,7 @@ export default function Home() {
             <div className="lg:w-1/2">
               <div className="bg-green-100 rounded-lg p-8 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="text-6xl mb-4"><img src="src/assets/terrytodd.jpg" alt="Big Thicket Lawn Services - Owners" className="rounded" /></div>
+                  <div className="text-6xl mb-4"><img src="public/terrytodd.jpg" alt="Big Thicket Lawn Services - Owners" className="rounded" /></div>
                   <p className="text-lg text-gray-600">Family-owned & operated</p>
                 </div>
               </div>
