@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { HeaderMower } from "./HeaderMower";
+import { FooterMower } from "./HeaderMower";
 
 export const Footer = () => {
     return (
@@ -8,7 +8,7 @@ export const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="flex flex-col items-center md:items-start">
                         <Link to="/" className="mb-4">
-                            <HeaderMower />
+                            <FooterMower />
                         </Link>
                         <p className="text-green-200 text-sm mt-2">
                             Professional lawn care services in Southeast Texas

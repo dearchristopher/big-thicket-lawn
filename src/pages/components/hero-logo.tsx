@@ -24,18 +24,18 @@ export const HeroLogo = () => {
     }, []);
 
     return (
-        <h1 className="text-4xl sm:text-6xl lg:text-9xl font-bold mb-4 tracking-wider font-stable">
+        <h1 className="text-6xl lg:text-9xl font-bold mb-4 tracking-wider font-stable">
             <span
-                className={`font-decorative tracking-tighter flex flex-col items-center pb-2 transition-all duration-700 ease-out leading-[40px] sm:leading-[60px] lg:leading-[95px] ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}
+                className={`font-decorative tracking-tighter flex flex-col items-center pb-2 transition-all duration-700 ease-out leading-[50px] sm:leading-[60px] lg:leading-[95px] ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}
             >
                 <p>BIG</p>
                 <p>THICKET</p>
             </span>
             <div className='relative w-full'>
-                <div className="pb-6">
+                <div className="pb-1">
                     <div className="flex flex-col gap-[2px] sm:gap-[3px] lg:gap-1 w-full px-2 sm:px-8 lg:px-12">
-                        <div className="absolute inset-0 flex items-center justify-center px-2 sm:px-8 lg:px-12 z-10">
-                            <MowerTreeIcon className={`h-28 sm:h-32 lg:h-42 xl:h-52 fill-green-900 stroke-white stroke-[10px] transition-all duration-700 ease-out ${showIcons ? 'opacity-100' : 'opacity-0 translate-y-2'}`} />
+                        <div className="absolute inset-0 flex items-center justify-center px-2 sm:px-8 lg:px-12 z-10 top-[-25px]">
+                            <MowerTreeIcon className={`h-32 sm:h-42 lg:h-48 xl:h-54 fill-green-900 stroke-white stroke-[10px] transition-all duration-700 ease-out ${showIcons ? 'opacity-100' : 'opacity-0 translate-y-2'}`} />
                         </div>
                         {['bg-red-600', 'bg-orange-400', 'bg-yellow-400', 'bg-teal-700', 'bg-green-900'].map((color, index) => (
                             <div
