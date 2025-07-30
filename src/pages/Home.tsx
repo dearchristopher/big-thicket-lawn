@@ -5,13 +5,13 @@ export default function Home() {
         className="relative h-screen bg-cover bg-center flex items-center justify-center bg-green-900"
       >
         <div className="text-center text-white px-4">
-          <h1 className="text-9xl font-bold mb-4 tracking-wider">
+          <h1 className="text-9xl font-bold mb-4 tracking-wider font-stable">
             <div className="flex flex-col gap-1">
               <span className="font-decorative tracking-tighter">BIG THICKET</span>
               <span className="text-6xl font-main tracking-tight">LAWN SERVICES</span>
             </div>
           </h1>
-          <p className="text-xl md:text-2xl mb-8 font-medium font-futura">
+          <p className="text-xl md:text-2xl mb-8 font-medium font-main">
             Family-Owned Lawn Care in Lumberton, TX
           </p>
           <div className="flex flex-wrap justify-center gap-8 mb-8 text-lg">

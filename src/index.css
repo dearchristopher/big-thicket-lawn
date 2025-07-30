@@ -1,9 +1,5 @@
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap&family=Futura+PT:wght@400;500;700&display=swap');
-
 @import "tailwindcss";
-
-/* Define CSS layers to control specificity */
+  
 @layer base, components, utilities;
 
 /* Base layer for default styles */
@@ -14,9 +10,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     
-    /* Custom font families */
+    /* Custom font families with optimized fallbacks */
     --font-decorative: 'Bungee', 'Impact', 'Arial Black', sans-serif;
     --font-futura: 'Futura PT', 'Futura', 'Century Gothic', sans-serif;
+  }
+  
+  /* Ensure fonts load with minimal layout shift */
+  * {
+    font-feature-settings: "kern" 1;
   }
 
   body {
@@ -34,13 +35,27 @@
   }
 }
 
-/* Custom font utility classes */
+/* Custom font utility classes with layout shift prevention */
 @layer utilities {
   .font-decorative {
-    font-family: var(--font-decorative);
+    font-family: 'Bungee', 'Impact', 'Arial Black', sans-serif;
   }
   
   .font-main {
-    font-family: var(--font-futura);
+    font-family: 'Futura PT', 'Futura', 'Century Gothic', sans-serif;
+  }
+  
+  /* Additional utility for preventing layout shift on large text */
+  .font-stable {
+    font-kerning: auto;
+    text-rendering: optimizeLegibility;
+    font-synthesis: none;
+    /* Prevent invisible text during font swap */
+    font-display: swap;
+  }
+  
+  /* Size-adjust fallbacks to minimize layout shift */
+  .text-stable {
+    font-size-adjust: 0.5;
   }
 }
