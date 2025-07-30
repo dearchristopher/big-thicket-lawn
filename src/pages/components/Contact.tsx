@@ -1,6 +1,6 @@
 export const Contact = () => {
     return (
-        <div className="bg-white shadow-lg rounded-lg p-8 flex flex-col items-center">
+        <div className="bg-white shadow-lg rounded-2xl p-8 flex flex-col items-center">
             <div className="flex items-center gap-4 mb-6">
                 <h3 className="text-2xl font-bold text-red-600 font-main">GET IN TOUCH</h3>
             </div>

@@ -63,7 +63,7 @@ export default function Home() {
             <div className="lg:w-1/2">
               <div className="bg-green-100 rounded-lg p-8 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="text-6xl mb-4">👨‍👩‍👧‍👦</div>
+                  <div className="text-6xl mb-4"><img src="src/assets/terrytodd.jpg" alt="Big Thicket Lawn Services - Owners" className="rounded" /></div>
                   <p className="text-lg text-gray-600">Family-owned & operated</p>
                 </div>
               </div>
@@ -72,7 +72,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Services Section */}
       <div id="services" className="bg-white py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
