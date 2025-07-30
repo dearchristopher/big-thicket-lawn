@@ -1,0 +1,1 @@
+export const textShadow = "text-shadow-lg text-shadow-gray";

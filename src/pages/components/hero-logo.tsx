@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { MowerTreeIcon } from "../../components/icons/MowerTree";
+import { textShadow } from "../utils/text-classes";
 
 export const HeroLogo = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -24,12 +25,12 @@ export const HeroLogo = () => {
     }, []);
 
     return (
-        <h1 className="text-6xl lg:text-9xl font-bold mb-4 tracking-wider font-stable">
+        <h1 className="text-7xl lg:text-9xl font-bold mb-4 tracking-wider font-stable">
             <span
-                className={`font-decorative tracking-tighter flex flex-col items-center pb-2 transition-all duration-700 ease-out leading-[50px] sm:leading-[60px] lg:leading-[95px] ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}
+                className={`font-decorative tracking-tighter flex flex-col items-center pb-2 transition-all duration-700 ease-out leading-[55px] sm:leading-[60px] lg:leading-[95px] ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}
             >
-                <p>BIG</p>
-                <p>THICKET</p>
+                <p className={textShadow}>BIG</p>
+                <p className={textShadow}>THICKET</p>
             </span>
             <div className='relative w-full'>
                 <div className="pb-1">
@@ -49,7 +50,7 @@ export const HeroLogo = () => {
 
                 <div className="flex flex-col items-center gap-1 px-4 sm:px-0">
                     <span
-                        className={`text-2xl sm:text-4xl lg:text-6xl font-main tracking-tight transition-all duration-700 ease-out text-center ${showTitle ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-10'}`}
+                        className={`text-3xl sm:text-4xl lg:text-6xl font-main tracking-tight transition-all duration-700 ease-out text-center ${textShadow} ${showTitle ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-10'}`}
                     >
                         LAWN SERVICES
                     </span>

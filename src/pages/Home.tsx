@@ -1,7 +1,13 @@
+import { TreesIcon } from "lucide-react";
+import { Mower } from "../components/icons";
+import { Broom } from "../components/icons/Broom";
+import { Bush } from "../components/icons/Bush";
+import { Shears } from "../components/icons/Shears";
 import { Bar } from "./components/bar";
 import { Contact } from "./components/Contact";
 import { HeroLogo } from "./components/hero-logo";
 import { Quote } from "./components/Quote";
+import { textShadow } from "./utils/text-classes";
 
 export default function Home() {
   return (
@@ -20,14 +26,14 @@ export default function Home() {
         ></div>
         <div className="relative text-center text-white px-4 z-10">
           <HeroLogo />
-          <p className="text-xl md:text-2xl mb-8 font-medium font-main">
+          <p className={`text-lg sm:text-xl md:text-2xl mb-8 font-medium font-main ${textShadow}`}>
             Family-Owned Lawn Care in Lumberton, TX
           </p>
 
           <Bar color="yellow-400" className='mb-8' />
 
           <div className='flex flex-col mb-8 gap-1'>
-            <div className="flex flex-wrap justify-center gap-8 text-lg">
+            <div className={`flex flex-wrap justify-center gap-8 text-lg ${textShadow}`}>
               <div className="flex items-center gap-2">
                 <span className="text-green-400">✓</span>
                 <span>Mowing</span>
@@ -47,7 +53,7 @@ export default function Home() {
             </div>
           </div>
 
-          <button onClick={() => window.location.href = "#contact"} className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors">
+          <button onClick={() => window.location.href = "#contact"} className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors drop-shadow-lg drop-shadow-gray-800">
             Contact Us
           </button>
         </div>
@@ -59,7 +65,7 @@ export default function Home() {
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
               <div className="flex items-center gap-4 mb-6">
-                <div className="text-green-700 text-4xl">🌲</div>
+                <div className="text-green-700 text-4xl"><TreesIcon className='h-12 w-12' /></div>
                 <h2 className="text-4xl font-bold text-red-600 font-futura">ABOUT US</h2>
               </div>
               <div className="space-y-4 text-lg text-gray-700">
@@ -95,29 +101,29 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="bg-green-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
-                <span className="text-4xl">🚜</span>
+              <div className="bg-green-700 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4 pb-2">
+                <span className="text-4xl"><Mower className='h-14 w-14 fill-green-100' /></span>
               </div>
-              <h3 className="text-xl font-bold text-red-600 mb-2">Lawn Mowing</h3>
+              <h3 className="text-xl font-bold text-red-600 mb-2">Mowing</h3>
             </div>
 
             <div className="text-center">
-              <div className="bg-green-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
-                <span className="text-4xl">✂️</span>
+              <div className="bg-green-700 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                <span className="text-4xl"><Shears className='h-12 w-12 fill-green-100' /></span>
               </div>
               <h3 className="text-xl font-bold text-red-600 mb-2">Edging & Trimming</h3>
             </div>
 
             <div className="text-center">
-              <div className="bg-green-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
-                <span className="text-4xl">🧹</span>
+              <div className="bg-green-700 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                <span className="text-4xl"><Broom className='h-12 w-12 fill-green-100' /></span>
               </div>
               <h3 className="text-xl font-bold text-red-600 mb-2">Mulch & Cleanups</h3>
             </div>
 
             <div className="text-center">
-              <div className="bg-green-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
-                <span className="text-4xl">🌳</span>
+              <div className="bg-green-700 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                <span className="text-4xl"><Bush className='h-12 w-12 fill-green-100' /></span>
               </div>
               <h3 className="text-xl font-bold text-red-600 mb-2">Bush Shaping</h3>
             </div>

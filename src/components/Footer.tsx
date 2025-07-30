@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FooterMower } from "./HeaderMower";
 import { MowerTreeIcon } from "./icons/MowerTree";
+import { Heart } from "lucide-react";
 
 export const Footer = () => {
     return (
@@ -67,8 +68,9 @@ export const Footer = () => {
                 </div>
 
                 <div className="border-t border-green-700 mt-8 pt-8 text-center text-green-300 text-sm flex flex-col items-center">
-                    <div>
+                    <div className="flex relative">
                         <MowerTreeIcon className="w-12 h-12 fill-green-300" />
+                        <Heart className="w-4 h-4 fill-red-400 absolute top-[24px] right-[-14px] stroke-transparent" />
                     </div>
                     <p>&copy; {new Date().getFullYear()} Big Thicket Lawn Services. All rights reserved.</p>
                 </div>
