@@ -49,7 +49,7 @@ export const Header = () => {
 
                     <button
                         onClick={toggleMobileMenu}
-                        className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5"
+                        className="hidden justify-center items-center w-8 h-8 space-y-1.5"
                         aria-label="Toggle mobile menu"
                     >
                         <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
