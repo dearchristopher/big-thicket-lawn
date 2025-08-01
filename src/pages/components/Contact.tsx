@@ -9,7 +9,7 @@ export const Contact = () => {
 
             <div className="space-y-6">
                 <div className="text-center">
-                    <p className="text-lg text-gray-700 mb-4 font-semibold">Need something else?</p>
+                    <p className="text-lg text-gray-700 mb-4 font-semibold">Ready to chat?</p>
                     <p className="text-gray-600">We're here to help with all your lawn care needs!</p>
                 </div>
 

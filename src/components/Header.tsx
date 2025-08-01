@@ -32,8 +32,7 @@ export const Header = () => {
         <nav className="sticky top-0 z-50 bg-green-700 text-white shadow-lg">
             <div className="px-4 sm:px-8">
                 <div className="flex justify-between items-center h-16">
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex gap-4">
+                    <div className="hidden gap-4">
                         <Link to="/" className={linkStyle}>
                             Home
                         </Link>
@@ -48,7 +47,6 @@ export const Header = () => {
                         </Link>
                     </div>
 
-                    {/* Mobile Hamburger Button */}
                     <button
                         onClick={toggleMobileMenu}
                         className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5"
@@ -60,14 +58,14 @@ export const Header = () => {
                     </button>
 
                     {/* Header Logo */}
-                    <div className={`transition-all duration-300 ${showLogo ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
+                    <div className={`transition-all duration-300 px-6 ${showLogo ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
                         <Link to="/" className="text-white font-bold hover:text-green-200 transition-colors font-decorative">
                             <HeaderMower />
                         </Link>
                     </div>
                 </div>
 
-                {/* Mobile Menu */}
+
                 <div className={`md:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
                     <div className="py-2 space-y-1">
                         <Link to="/" className={mobileLinkStyle} onClick={closeMobileMenu}>
