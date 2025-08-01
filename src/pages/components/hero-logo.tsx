@@ -37,7 +37,7 @@ export const HeroLogo = () => {
                         <div className="absolute inset-0 flex items-center justify-center px-2 sm:px-8 lg:px-12 z-10 top-[-25px]">
                             <MowerTreeIcon className={`h-32 sm:h-42 lg:h-48 xl:h-54 fill-green-900 stroke-white stroke-[10px] transition-all duration-700 ease-out ${showIcons ? 'opacity-100' : 'opacity-0 translate-y-2'}`} />
                         </div>
-                        {['bg-red-700', 'bg-yellow-300', 'bg-orange-400', 'bg-yellow-700', 'bg-green-900'].map((color, index) => (
+                        {['bg-red-900', 'bg-orange-700', 'bg-yellow-400', 'bg-green-700', 'bg-green-900'].map((color, index) => (
                             <div
                                 key={color}
                                 className={`h-3 sm:h-4 lg:h-5 xl:h-6 rounded-full ${color} transition-all duration-500 ease-out ${showBars ? 'opacity-100 w-full' : 'opacity-0 w-0'}`}
