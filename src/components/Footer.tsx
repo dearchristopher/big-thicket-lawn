@@ -7,17 +7,17 @@ export const Footer = () => {
     return (
         <footer className="bg-green-800 text-white py-12 px-8">
             <div className="max-w-6xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="flex gap-8 justify-center">
                     <div className="flex flex-col">
                         <Link to="/" className="mb-4 w-full">
                             <FooterMower />
                         </Link>
-                        <p className="text-green-200 text-sm mt-2">
+                        <p className="text-green-200 text-sm mt-2 text-wrap w-64">
                             Professional lawn care services in Southeast Texas
                         </p>
                     </div>
 
-                    <div>
+                    <div className='hidden'>
                         <h3 className="text-xl font-bold mb-4 font-decorative">Quick Links</h3>
                         <ul className="space-y-2">
                             <li>
