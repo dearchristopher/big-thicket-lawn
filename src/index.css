@@ -12,7 +12,7 @@
     
     /* Custom font families with optimized fallbacks */
     --font-decorative: 'Bungee', 'Impact', 'Arial Black', sans-serif;
-    --font-futura: 'Futura PT', 'Futura', 'Century Gothic', sans-serif;
+    --font-futura: 'Roboto Condensed', 'sans-serif';
   }
   
   /* Ensure fonts load with minimal layout shift */
@@ -42,7 +42,7 @@
   }
   
   .font-main {
-    font-family: 'Futura PT', 'Futura', 'Century Gothic', sans-serif;
+    font-family: 'Roboto Condensed', 'sans-serif';
   }
   
   /* Additional utility for preventing layout shift on large text */
