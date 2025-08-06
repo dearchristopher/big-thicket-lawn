@@ -1,6 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { useState, useCallback } from 'react';
 import AsyncSelect from 'react-select/async';
+import Select from 'react-select';
 import { debounce } from 'lodash';
 
 import L from 'leaflet';
@@ -22,7 +23,7 @@ interface QuoteFormData {
     phone: string;
     address: string;
     propertySize: string;
-    servicesNeeded: string;
+    servicesNeeded: string[];
     additionalNotes?: string;
 }
 
@@ -32,6 +33,7 @@ interface GeocodedAddress {
     city?: string;
     state?: string;
     zipCode?: string;
+    rawData?: { class?: string; type?: string; boundingbox?: string[] }; // Store raw Nominatim response for property size estimation
 }
 
 interface AddressOption {
@@ -41,7 +43,16 @@ interface AddressOption {
 }
 
 export const Quote = () => {
-    const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, control } = useForm<QuoteFormData>();
+    const defaultValues = {
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        propertySize: '',
+        servicesNeeded: [],
+        additionalNotes: ''
+    };
+    const { register, handleSubmit, clearErrors, formState: { errors, isSubmitting, isDirty }, setValue, control, reset } = useForm<QuoteFormData>({ defaultValues });
     const [geocodedAddress, setGeocodedAddress] = useState<GeocodedAddress | null>(null);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
@@ -58,7 +69,7 @@ export const Quote = () => {
         lat: geocodedAddress.coordinates[1],
         lng: geocodedAddress.coordinates[0],
         name: geocodedAddress.city ? `${geocodedAddress.city}, ${geocodedAddress.state}` : geocodedAddress.formatted,
-        zoom: 17
+        zoom: 16
     } : defaultLocation;
 
     // Geocoding function (without debouncing)
@@ -84,13 +95,14 @@ export const Quote = () => {
             const data = await response.json();
 
             if (data && data.length > 0) {
-                return data.map((result: { display_name: string; lon: string; lat: string; address?: { house_number?: string; road?: string; city?: string; town?: string; village?: string; state?: string; postcode?: string } }) => {
+                return data.map((result: { display_name: string; lon: string; lat: string; address?: { house_number?: string; road?: string; city?: string; town?: string; village?: string; state?: string; postcode?: string }; class?: string; type?: string; boundingbox?: string[] }) => {
                     const geocoded: GeocodedAddress = {
                         formatted: result.display_name,
                         coordinates: [parseFloat(result.lon), parseFloat(result.lat)],
                         city: result.address?.city || result.address?.town || result.address?.village,
                         state: result.address?.state,
                         zipCode: result.address?.postcode,
+                        rawData: result, // Store raw data for property size estimation
                     };
 
                     // Create a shorter, more readable label
@@ -127,14 +139,54 @@ export const Quote = () => {
         [debouncedGeocode]
     );
 
+    // Estimate property size from Nominatim data
+    const estimatePropertySize = (result: { class?: string; type?: string; boundingbox?: string[] }): string | null => {
+        // Check if it's commercial/industrial
+        if (result.class !== 'place' || (result.type !== 'house' && result.type !== 'residential')) {
+            return 'commercial';
+        }
+
+        // Calculate approximate area from bounding box (rough estimate)
+        if (result.boundingbox && result.boundingbox.length === 4) {
+            const [minLat, maxLat, minLon, maxLon] = result.boundingbox.map(Number);
+            const latDiff = maxLat - minLat;
+            const lonDiff = maxLon - minLon;
+
+            // Very rough area calculation (not precise, but gives an idea)
+            const roughArea = latDiff * lonDiff * 69 * 69; // Convert to approximate square miles, then acres
+            const acres = roughArea * 640; // Convert square miles to acres
+
+            if (acres < 0.25) return 'small';
+            if (acres < 0.5) return 'medium';
+            if (acres < 1) return 'large';
+            return 'xlarge';
+        }
+
+        // Default based on place type
+        if (result.type === 'house' || result.type === 'residential') {
+            return 'small'; // Most residential properties are small
+        }
+
+        return null; // No good estimate available
+    };
+
     // Handle address selection from react-select
     const handleAddressSelect = (selectedOption: AddressOption | null) => {
         if (selectedOption) {
             setGeocodedAddress(selectedOption.data);
             setValue('address', selectedOption.value);
+
+            // Auto-suggest property size if we have the raw Nominatim data
+            if (selectedOption.data.rawData) {
+                const suggestedSize = estimatePropertySize(selectedOption.data.rawData);
+                if (suggestedSize) {
+                    setValue('propertySize', suggestedSize);
+                }
+            }
         } else {
             setGeocodedAddress(null);
             setValue('address', '');
+            setValue('propertySize', ''); // Clear property size when address is cleared
         }
     };
 
@@ -142,47 +194,64 @@ export const Quote = () => {
         try {
             setSubmitStatus('idle');
 
-            // Prepare email data
-            const emailData = {
-                to: 'estimate@bigthicketlawn.com',
-                subject: `New Quote Request from ${data.name}`,
-                customerInfo: {
+            // Send quote request via serverless function
+            const response = await fetch('/api/send-quote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
                     ...data,
                     geocodedAddress: geocodedAddress,
                     submittedAt: new Date().toISOString(),
-                }
-            };
+                }),
+            });
 
-            // For now, we'll use a simple mailto link or you can implement a backend API
-            // Option 1: mailto link (immediate)
-            const mailtoLink = `mailto:estimate@bigthicketlawn.com?subject=${encodeURIComponent(emailData.subject)}&body=${encodeURIComponent(
-                `New Quote Request\n\n` +
-                `Name: ${data.name}\n` +
-                `Email: ${data.email}\n` +
-                `Phone: ${data.phone}\n` +
-                `Address: ${data.address}\n` +
-                `${geocodedAddress ? `Geocoded Address: ${geocodedAddress.formatted}\n` : ''}` +
-                `${geocodedAddress ? `Coordinates: ${geocodedAddress.coordinates.join(', ')}\n` : ''}` +
-                `Property Size: ${data.propertySize}\n` +
-                `Services Needed: ${data.servicesNeeded}\n` +
-                `${data.additionalNotes ? `Additional Notes: ${data.additionalNotes}\n` : ''}` +
-                `\nSubmitted: ${new Date().toLocaleString()}`
-            )}`;
+            const result = await response.json();
 
-            window.open(mailtoLink);
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to send quote request');
+            }
 
-            // Option 2: You can replace this with an API call to your backend
-            // const response = await fetch('/api/send-quote', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(emailData)
-            // });
-
+            console.log('Quote sent successfully:', result.emailId);
             setSubmitStatus('success');
+            
+            // Reset form after successful submission
+            setTimeout(() => {
+                resetForm();
+                setGeocodedAddress(null);
+            }, 2000);
+
         } catch (error) {
             console.error('Submit error:', error);
             setSubmitStatus('error');
         }
+    };
+
+    const propertySizeOptions = [
+        { value: 'small', label: 'Small (1/3 acres or less)' },
+        { value: 'medium', label: 'Medium (1/3 - 1/2 acres)' },
+        { value: 'large', label: 'Large (1/2 - 1 acre)' },
+        { value: 'xlarge', label: 'Extra Large (> 1 acre)' },
+        { value: 'commercial', label: 'Commercial Property' }
+    ];
+
+    const services = [
+        { value: 'mowing', label: 'Mowing' },
+        { value: 'trimming', label: 'Trimming' },
+        { value: 'edging', label: 'Edging' },
+        { value: 'mulching', label: 'Mulching' },
+        { value: 'weed control', label: 'Weed Control' },
+        { value: 'fertilizing', label: 'Fertilizing' },
+        { value: 'landscape design', label: 'Landscape Design' },
+        { value: 'landscape installation', label: 'Landscape Installation' },
+        { value: 'landscape maintenance', label: 'Landscape Maintenance' },
+    ]
+
+    const resetForm = () => {
+        clearErrors();
+        reset(defaultValues, { keepErrors: false, keepIsValid: false });
+        setSubmitStatus('idle');
     };
 
     return (
@@ -275,6 +344,7 @@ export const Quote = () => {
                                 styles={{
                                     control: (base, state) => ({
                                         ...base,
+                                        borderRadius: '0.5rem',
                                         minHeight: '48px',
                                         borderColor: errors.address ? '#ef4444' : state.isFocused ? '#10b981' : '#d1d5db',
                                         boxShadow: state.isFocused ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none',
@@ -292,35 +362,93 @@ export const Quote = () => {
                     />
                     {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
                     {geocodedAddress && (
-                        <p className="text-green-600 text-sm mt-1">✓ Address verified: {geocodedAddress.city}, {geocodedAddress.state}</p>
+                        <p className="text-green-600 text-sm mt-1">✓ Address verified</p>
                     )}
                 </div>
 
                 {/* Property Size */}
                 <div>
-                    <select
-                        {...register('propertySize', { required: 'Property size is required' })}
-                        className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${errors.propertySize ? 'border-red-500' : 'border-gray-300'
-                            }`}
-                    >
-                        <option value="">Select Property Size *</option>
-                        <option value="small">Small (&lt; 0.25 acres)</option>
-                        <option value="medium">Medium (0.25 - 0.5 acres)</option>
-                        <option value="large">Large (0.5 - 1 acre)</option>
-                        <option value="xlarge">Extra Large (&gt; 1 acre)</option>
-                        <option value="commercial">Commercial Property</option>
-                    </select>
+                    <Controller
+                        name="propertySize"
+                        control={control}
+                        rules={{ required: 'Property size is required' }}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                options={propertySizeOptions}
+                                value={field.value ? propertySizeOptions.find(option => option.value === field.value) || null : null}
+                                onChange={(selectedOption) => {
+                                    field.onChange(selectedOption?.value || '');
+                                }}
+                                placeholder="Select Property Size *"
+                                isClearable
+                                isSearchable={false}
+                                className={`react-select-container ${errors.propertySize ? 'react-select-error' : ''
+                                    }`}
+                                classNamePrefix="react-select"
+                                styles={{
+                                    control: (base, state) => ({
+                                        ...base,
+                                        borderRadius: '0.5rem',
+                                        minHeight: '48px',
+                                        borderColor: errors.propertySize ? '#ef4444' : state.isFocused ? '#10b981' : '#d1d5db',
+                                        boxShadow: state.isFocused ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none',
+                                        '&:hover': {
+                                            borderColor: errors.propertySize ? '#ef4444' : '#10b981'
+                                        }
+                                    }),
+                                    placeholder: (base) => ({
+                                        ...base,
+                                        color: '#9ca3af'
+                                    })
+                                }}
+                            />
+                        )}
+                    />
                     {errors.propertySize && <p className="text-red-500 text-sm mt-1">{errors.propertySize.message}</p>}
                 </div>
 
                 {/* Services Needed */}
                 <div>
-                    <textarea
-                        {...register('servicesNeeded', { required: 'Please describe the services needed' })}
-                        placeholder="Services Needed (mowing, edging, trimming, etc.) *"
-                        rows={3}
-                        className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${errors.servicesNeeded ? 'border-red-500' : 'border-gray-300'
-                            }`}
+                    <Controller
+                        name="servicesNeeded"
+                        control={control}
+                        rules={{ required: 'Please select 1 or more services' }}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                options={services}
+                                value={field.value ? services.filter(option => field.value.includes(option.value)) : []}
+                                onChange={(selectedOptions) => {
+                                    const values = selectedOptions ? selectedOptions.map(option => option.value) : [];
+                                    field.onChange(values);
+                                }}
+                                placeholder="Select Services Needed *"
+                                isClearable
+                                isSearchable={false}
+                                className={`react-select-container ${errors.servicesNeeded ? 'react-select-error' : ''
+                                    }`}
+                                classNamePrefix="react-select"
+                                isMulti
+                                closeMenuOnSelect={false}
+                                styles={{
+                                    control: (base, state) => ({
+                                        ...base,
+                                        borderRadius: '0.5rem',
+                                        minHeight: '48px',
+                                        borderColor: errors.servicesNeeded ? '#ef4444' : state.isFocused ? '#10b981' : '#d1d5db',
+                                        boxShadow: state.isFocused ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none',
+                                        '&:hover': {
+                                            borderColor: errors.servicesNeeded ? '#ef4444' : '#10b981'
+                                        }
+                                    }),
+                                    placeholder: (base) => ({
+                                        ...base,
+                                        color: '#9ca3af'
+                                    })
+                                }}
+                            />
+                        )}
                     />
                     {errors.servicesNeeded && <p className="text-red-500 text-sm mt-1">{errors.servicesNeeded.message}</p>}
                 </div>
@@ -333,6 +461,17 @@ export const Quote = () => {
                         rows={2}
                         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
+                    {isDirty && (
+                        <div className="flex items-center justify-end mt-2">
+                            <button
+                                type="button"
+                                onClick={() => resetForm()}
+                                className="hover:bg-gray-200 text-gray-400 py-2 rounded-lg font-medium transition-colors"
+                            >
+                                Reset Form
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <button

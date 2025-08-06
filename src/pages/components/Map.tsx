@@ -8,6 +8,7 @@ export const Map = ({ mapLocation, geocodedAddress }: { mapLocation: { lat: numb
                 center={[mapLocation.lat, mapLocation.lng]}
                 zoom={mapLocation.zoom}
                 style={{ height: '100%', width: '100%' }}
+                dragging={false}
                 key={`${mapLocation.lat}-${mapLocation.lng}`} // Force re-render when location changes
             >
                 <TileLayer
@@ -33,7 +34,7 @@ export const Map = ({ mapLocation, geocodedAddress }: { mapLocation: { lat: numb
             </MapContainer>
         </div>
         <p className="text-sm text-gray-500 mt-2 text-center">
-            {geocodedAddress ? 'Property location' : 'Default service area - select an address below to update'}
+            {geocodedAddress ? 'Your property location' : 'Default service area - select an address below to update'}
         </p>
     </div>)
 }

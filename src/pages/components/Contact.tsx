@@ -5,7 +5,7 @@ export const Contact = () => {
     const btnCls = 'flex items-center gap-8 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors cursor-pointer'
 
     return (
-        <div className="bg-white shadow-lg rounded-2xl p-8 flex flex-col items-center">
+        <div className="bg-white shadow-lg rounded-2xl p-8 flex flex-col items-center h-fit">
             <div className="flex items-center gap-4 mb-6">
                 <h3 className="text-2xl font-bold text-red-600 font-main">GET IN TOUCH</h3>
             </div>
