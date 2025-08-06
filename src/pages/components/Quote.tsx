@@ -399,14 +399,31 @@ export const Quote = () => {
                                     {...field}
                                     loadOptions={loadAddressOptions}
                                     onChange={(selectedOption) => {
-                                        handleAddressSelect(selectedOption as AddressOption | null);
-                                        field.onChange(selectedOption?.value || '');
+                                        if (selectedOption) {
+                                            // Handle both regular options and created options
+                                            const addressValue = selectedOption.value;
+                                            field.onChange(addressValue);
+
+                                            // Only call handleAddressSelect for geocoded options (not custom ones)
+                                            if ('data' in selectedOption && selectedOption.data) {
+                                                handleAddressSelect(selectedOption as AddressOption);
+                                            } else {
+                                                // Clear geocoded data for custom addresses
+                                                setGeocodedAddress(null);
+                                            }
+                                        } else {
+                                            // Handle clear
+                                            field.onChange('');
+                                            setGeocodedAddress(null);
+                                        }
                                     }}
-                                    onInputChange={(inputValue: string) => {
-                                        // Allow free-form text input
-                                        field.onChange(inputValue);
+                                    onInputChange={(inputValue: string, actionMeta) => {
+                                        // Only update field value for input-change, not menu-close or set-value
+                                        if (actionMeta.action === 'input-change') {
+                                            field.onChange(inputValue);
+                                        }
                                     }}
-                                    value={field.value ? { value: field.value, label: field.value, data: geocodedAddress! } : null}
+                                    value={field.value ? { value: field.value, label: field.value } : null}
                                     placeholder="Start typing your property address..."
                                     noOptionsMessage={({ inputValue }) =>
                                         inputValue.length < 3 ? 'Type at least 3 characters for suggestions' : 'No suggestions found - you can still use this address'
@@ -421,8 +438,12 @@ export const Quote = () => {
                                     onCreateOption={(inputValue: string) => {
                                         // Handle custom address input
                                         field.onChange(inputValue);
-                                        setGeocodedAddress(null); // Clear geocoded data for custom addresses
+                                        setGeocodedAddress(null);
                                     }}
+                                    // iOS Safari compatibility
+                                    menuShouldBlockScroll={false}
+                                    closeMenuOnScroll={true}
+                                    blurInputOnSelect={true}
                                     cacheOptions
                                     defaultOptions={false}
                                     className={`react-select-container ${errors.address ? 'react-select-error' : ''
@@ -449,7 +470,7 @@ export const Quote = () => {
                                 {geocodedAddress ? (
                                     <p className="text-green-600 text-sm mt-1">✓ Address verified</p>
                                 ) : field.value && (
-                                    <p className="text-blue-600 text-sm mt-1">ℹ Custom address entered</p>
+                                    <p className="text-blue-600 text-sm mt-1">ℹ Custom address</p>
                                 )}
                             </div>
                         )}
