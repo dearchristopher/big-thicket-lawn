@@ -194,7 +194,32 @@ export const Quote = () => {
         try {
             setSubmitStatus('idle');
 
-            // Send quote request via serverless function
+            // Check if we're in development mode
+            const isDevelopment = import.meta.env.DEV;
+            
+            if (isDevelopment) {
+                // Development mode - simulate success
+                console.log('Development mode - Quote data:', {
+                    ...data,
+                    geocodedAddress: geocodedAddress,
+                    submittedAt: new Date().toISOString(),
+                });
+                
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                setSubmitStatus('success');
+                
+                // Reset form after successful submission
+                setTimeout(() => {
+                    resetForm();
+                    setGeocodedAddress(null);
+                }, 2000);
+                
+                return;
+            }
+
+            // Production mode - send via serverless function
             const response = await fetch('/api/send-quote', {
                 method: 'POST',
                 headers: {
@@ -261,7 +286,11 @@ export const Quote = () => {
 
             {submitStatus === 'success' && (
                 <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-                    Thank you! Your quote request has been submitted. We'll get back to you soon.
+                    {import.meta.env.DEV ? (
+                        <>Thank you! Your quote request has been received. <strong>(Development mode - no email sent)</strong></>
+                    ) : (
+                        'Thank you! Your quote request has been submitted. We\'ll get back to you soon.'
+                    )}
                 </div>
             )}
 

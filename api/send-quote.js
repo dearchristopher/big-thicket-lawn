@@ -47,11 +47,11 @@ export default async function handler(req, res) {
 
                 <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
                     <p style="margin: 0; color: #6b7280; font-size: 14px;">
-                        <strong>Submitted:</strong> ${new Date().toLocaleString('en-US', { 
-                            timeZone: 'America/Chicago',
-                            dateStyle: 'full',
-                            timeStyle: 'short'
-                        })}
+                        <strong>Submitted:</strong> ${new Date().toLocaleString('en-US', {
+            timeZone: 'America/Chicago',
+            dateStyle: 'full',
+            timeStyle: 'short'
+        })}
                     </p>
                 </div>
 
@@ -83,18 +83,21 @@ ${servicesNeeded.map(service => `• ${service}`).join('\n')}
 
 ${additionalNotes ? `Additional Notes:\n${additionalNotes}\n` : ''}
 
-Submitted: ${new Date().toLocaleString('en-US', { 
-    timeZone: 'America/Chicago',
-    dateStyle: 'full',
-    timeStyle: 'short'
-})}
+Submitted: ${new Date().toLocaleString('en-US', {
+            timeZone: 'America/Chicago',
+            dateStyle: 'full',
+            timeStyle: 'short'
+        })}
         `.trim();
 
+
+        const apiKey = process.env.RESEND_API_KEY;
+        console.log(apiKey)
         // Send email using Resend API
         const resendResponse = await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -117,15 +120,15 @@ Submitted: ${new Date().toLocaleString('en-US', {
         console.log('Email sent successfully:', result.id);
 
         // Return success response
-        res.status(200).json({ 
-            success: true, 
+        res.status(200).json({
+            success: true,
             message: 'Quote request sent successfully!',
-            emailId: result.id 
+            emailId: result.id
         });
 
     } catch (error) {
         console.error('Email sending error:', error);
-        res.status(500).json({ 
+        res.status(500).json({
             error: 'Failed to send quote request. Please try again or contact us directly.',
             details: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
