@@ -107,7 +107,7 @@ Submitted: ${new Date().toLocaleString('en-US', {
             body: JSON.stringify({
                 from: 'Big Thicket Lawn <estimate@bigthicketlawn.com>',
                 to: ['info@bigthicketlawn.com'],
-                reply_to: email,
+                reply_to: ['DONOTREPLY@bigthicketlawn.com'],
                 subject: `New Quote Request from ${name}`,
                 html: emailHtml,
                 text: emailText,
