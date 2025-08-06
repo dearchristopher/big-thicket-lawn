@@ -1,6 +1,6 @@
 import { useForm, Controller } from 'react-hook-form';
 import { useState, useCallback } from 'react';
-import AsyncSelect from 'react-select/async';
+import AsyncCreatableSelect from 'react-select/async-creatable';
 import Select from 'react-select';
 import { debounce } from 'lodash';
 
@@ -196,7 +196,7 @@ export const Quote = () => {
 
             // Check if we're in development mode
             const isDevelopment = import.meta.env.DEV;
-            
+
             if (isDevelopment) {
                 // Development mode - simulate success
                 console.log('Development mode - Quote data:', {
@@ -204,18 +204,18 @@ export const Quote = () => {
                     geocodedAddress: geocodedAddress,
                     submittedAt: new Date().toISOString(),
                 });
-                
+
                 // Simulate API delay
                 await new Promise(resolve => setTimeout(resolve, 1000));
-                
+
                 setSubmitStatus('success');
-                
+
                 // Reset form after successful submission
                 setTimeout(() => {
                     resetForm();
                     setGeocodedAddress(null);
                 }, 2000);
-                
+
                 return;
             }
 
@@ -240,7 +240,7 @@ export const Quote = () => {
 
             console.log('Quote sent successfully:', result.emailId);
             setSubmitStatus('success');
-            
+
             // Reset form after successful submission
             setTimeout(() => {
                 resetForm();
@@ -277,11 +277,55 @@ export const Quote = () => {
         clearErrors();
         reset(defaultValues, { keepErrors: false, keepIsValid: false });
         setSubmitStatus('idle');
+        setGeocodedAddress(null);
+    };
+
+    // Autofill function for testing
+    const autofillForm = () => {
+        const sampleData = {
+            name: 'John Smith',
+            email: 'john.smith@example.com',
+            phone: '409-555-0123',
+            address: '296 Hannah Lane, Lumberton, TX',
+            propertySize: 'medium',
+            servicesNeeded: ['mowing', 'trimming', 'edging'],
+            additionalNotes: 'Please call before arriving. Gate code is 1234.'
+        };
+
+        // Fill basic fields
+        setValue('name', sampleData.name);
+        setValue('email', sampleData.email);
+        setValue('phone', sampleData.phone);
+        setValue('servicesNeeded', sampleData.servicesNeeded);
+        setValue('additionalNotes', sampleData.additionalNotes);
+
+        // Simulate address selection
+        geocodeAddress(sampleData.address).then((options) => {
+            if (options.length > 0) {
+                const selectedOption = options[0];
+                handleAddressSelect(selectedOption);
+                setValue('address', selectedOption.value);
+            }
+        });
+
+        // Set property size
+        setValue('propertySize', sampleData.propertySize);
     };
 
     return (
         <div className="bg-white shadow-lg rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-red-600 mb-6 text-center font-futura">REQUEST ESTIMATE</h3>
+            <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-red-600 font-futura">REQUEST ESTIMATE</h3>
+                {import.meta.env.DEV && (
+                    <button
+                        type="button"
+                        onClick={autofillForm}
+                        className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
+                    >
+                        Autofill (Dev)
+                    </button>
+                )}
+            </div>
             <Map mapLocation={mapLocation} geocodedAddress={geocodedAddress} />
 
             {submitStatus === 'success' && (
@@ -350,49 +394,67 @@ export const Quote = () => {
                         control={control}
                         rules={{ required: 'Address is required' }}
                         render={({ field }) => (
-                            <AsyncSelect
-                                {...field}
-                                loadOptions={loadAddressOptions}
-                                onChange={(selectedOption) => {
-                                    handleAddressSelect(selectedOption as AddressOption | null);
-                                    field.onChange(selectedOption?.value || '');
-                                }}
-                                value={field.value ? { value: field.value, label: field.value, data: geocodedAddress! } : null}
-                                placeholder="Start typing your property address..."
-                                noOptionsMessage={({ inputValue }) =>
-                                    inputValue.length < 3 ? 'Type at least 3 characters' : 'No addresses found'
-                                }
-                                loadingMessage={() => 'Searching addresses...'}
-                                isClearable
-                                isSearchable
-                                cacheOptions
-                                defaultOptions={false}
-                                className={`react-select-container ${errors.address ? 'react-select-error' : ''
-                                    }`}
-                                classNamePrefix="react-select"
-                                styles={{
-                                    control: (base, state) => ({
-                                        ...base,
-                                        borderRadius: '0.5rem',
-                                        minHeight: '48px',
-                                        borderColor: errors.address ? '#ef4444' : state.isFocused ? '#10b981' : '#d1d5db',
-                                        boxShadow: state.isFocused ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none',
-                                        '&:hover': {
-                                            borderColor: errors.address ? '#ef4444' : '#10b981'
-                                        }
-                                    }),
-                                    placeholder: (base) => ({
-                                        ...base,
-                                        color: '#9ca3af'
-                                    })
-                                }}
-                            />
+                            <div>
+                                <AsyncCreatableSelect
+                                    {...field}
+                                    loadOptions={loadAddressOptions}
+                                    onChange={(selectedOption) => {
+                                        handleAddressSelect(selectedOption as AddressOption | null);
+                                        field.onChange(selectedOption?.value || '');
+                                    }}
+                                    onInputChange={(inputValue: string) => {
+                                        // Allow free-form text input
+                                        field.onChange(inputValue);
+                                    }}
+                                    value={field.value ? { value: field.value, label: field.value, data: geocodedAddress! } : null}
+                                    placeholder="Start typing your property address..."
+                                    noOptionsMessage={({ inputValue }) =>
+                                        inputValue.length < 3 ? 'Type at least 3 characters for suggestions' : 'No suggestions found - you can still use this address'
+                                    }
+                                    loadingMessage={() => 'Searching for suggestions...'}
+                                    isClearable
+                                    isSearchable
+                                    allowCreateWhileLoading
+                                    createOptionPosition="first"
+                                    formatCreateLabel={(inputValue: string) => `Use "${inputValue}" as address`}
+                                    isValidNewOption={(inputValue: string) => inputValue.length > 0}
+                                    onCreateOption={(inputValue: string) => {
+                                        // Handle custom address input
+                                        field.onChange(inputValue);
+                                        setGeocodedAddress(null); // Clear geocoded data for custom addresses
+                                    }}
+                                    cacheOptions
+                                    defaultOptions={false}
+                                    className={`react-select-container ${errors.address ? 'react-select-error' : ''
+                                        }`}
+                                    classNamePrefix="react-select"
+                                    styles={{
+                                        control: (base, state) => ({
+                                            ...base,
+                                            borderRadius: '0.5rem',
+                                            minHeight: '48px',
+                                            borderColor: errors.address ? '#ef4444' : state.isFocused ? '#10b981' : '#d1d5db',
+                                            boxShadow: state.isFocused ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none',
+                                            '&:hover': {
+                                                borderColor: errors.address ? '#ef4444' : '#10b981'
+                                            }
+                                        }),
+                                        placeholder: (base) => ({
+                                            ...base,
+                                            color: '#9ca3af'
+                                        })
+                                    }}
+                                />
+                                {/* Address status messages */}
+                                {geocodedAddress ? (
+                                    <p className="text-green-600 text-sm mt-1">✓ Address verified</p>
+                                ) : field.value && (
+                                    <p className="text-blue-600 text-sm mt-1">ℹ Custom address entered</p>
+                                )}
+                            </div>
                         )}
                     />
                     {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
-                    {geocodedAddress && (
-                        <p className="text-green-600 text-sm mt-1">✓ Address verified</p>
-                    )}
                 </div>
 
                 {/* Property Size */}
@@ -460,6 +522,7 @@ export const Quote = () => {
                                 classNamePrefix="react-select"
                                 isMulti
                                 closeMenuOnSelect={false}
+                                blurInputOnSelect={false}
                                 styles={{
                                     control: (base, state) => ({
                                         ...base,
