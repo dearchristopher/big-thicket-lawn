@@ -1,8 +1,12 @@
 import { textShadow } from "../utils/text-classes"
 import { Bar } from "./bar"
 import { HeroLogo } from "./hero-logo"
+import { EstimateModal } from "../../components/EstimateModal";
+import { useState } from "react";
 
 export const Hero = () => {
+    const [isEstimateModalOpen, setIsEstimateModalOpen] = useState(false);
+
     return (
 
         <div
@@ -17,7 +21,7 @@ export const Hero = () => {
                     background: 'radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.6) 100%)'
                 }}
             ></div>
-            <div className="relative text-center text-white px-4 z-10">
+            <div className="relative text-center flex flex-col gap-4 items-center text-white px-4 z-10">
                 <HeroLogo />
                 <p className={`text-lg sm:text-xl md:text-2xl mb-8 font-medium font-main ${textShadow}`}>
                     Family-Owned Lawn Care in Lumberton, TX
@@ -46,10 +50,24 @@ export const Hero = () => {
                     </div>
                 </div>
 
-                <button onClick={() => window.location.href = "#contact"} className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors drop-shadow-lg drop-shadow-gray-800">
-                    Contact Us
-                </button>
+                <div className="flex flex-col gap-4">
+                    <button
+                        onClick={() => setIsEstimateModalOpen(true)}
+                        className="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors drop-shadow-lg drop-shadow-gray-800"
+                    >
+                        Request Estimate
+                    </button>
+                    <button onClick={() => window.location.href = "#contact"} className="cursor-pointer hover:underline text-white  px-8 py-4 rounded-lg text-xl font-bold transition-colors drop-shadow-lg drop-shadow-gray-800">
+                        Contact Us
+                    </button>
+                </div>
             </div>
+
+            {/* Estimate Modal */}
+            <EstimateModal
+                isOpen={isEstimateModalOpen}
+                onClose={() => setIsEstimateModalOpen(false)}
+            />
         </div>
     )
 }
