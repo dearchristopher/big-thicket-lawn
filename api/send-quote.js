@@ -91,21 +91,25 @@ Submitted: ${new Date().toLocaleString('en-US', {
         `.trim();
 
 
-        const apiKey = process.env.RESEND_API_KEY;
-        console.log(apiKey)
-        // Send email using Resend API
+        const RESEND_API_KEY = process.env.RESEND_API_KEY;
+
+        if (!RESEND_API_KEY) {
+            throw new Error('RESEND_API_KEY environment variable is not set');
+        }
+
+        // Send email using Resend API (following official docs pattern)
         const resendResponse = await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${RESEND_API_KEY}`,
             },
             body: JSON.stringify({
-                from: 'quotes@bigthicketlawn.com', // Use your verified domain
-                to: ['estimate@bigthicketlawn.com'],
-                reply_to: email, // Customer can reply directly
+                from: 'Big Thicket Lawn <estimates@bigthicketlawn.com>', // Use your verified domain
+                to: ['info@bigthicketlawn.com'],
+                reply_to: email,
                 subject: `New Quote Request from ${name}`,
-                // html: emailHtml,
+                html: emailHtml,
                 text: emailText,
             }),
         });
