@@ -105,7 +105,7 @@ Submitted: ${new Date().toLocaleString('en-US', {
                 to: ['estimate@bigthicketlawn.com'],
                 reply_to: email, // Customer can reply directly
                 subject: `New Quote Request from ${name}`,
-                html: emailHtml,
+                // html: emailHtml,
                 text: emailText,
             }),
         });
