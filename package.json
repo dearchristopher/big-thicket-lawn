@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "svg-to-component": "svgr --out-dir src/components/icons --typescript --ref --memo"
+    "svg-to-component": "svgr --out-dir src/components/icons --typescript --ref --memo",
+    "test-email": "node test-email.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",

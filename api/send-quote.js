@@ -105,7 +105,7 @@ Submitted: ${new Date().toLocaleString('en-US', {
                 'Authorization': `Bearer ${RESEND_API_KEY}`,
             },
             body: JSON.stringify({
-                from: 'Big Thicket Lawn <estimates@bigthicketlawn.com>', // Use your verified domain
+                from: 'Big Thicket Lawn <estimate@bigthicketlawn.com>',
                 to: ['info@bigthicketlawn.com'],
                 reply_to: email,
                 subject: `New Quote Request from ${name}`,
