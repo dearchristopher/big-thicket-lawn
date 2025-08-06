@@ -5,6 +5,7 @@ import { About } from "./components/About";
 import { Services } from "./components/Services";
 import { Hero } from "./components/Hero";
 import { ContactLayout } from "./components/ContactLayout";
+import { Quote } from "./components/Quote";
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
       <About />
       <Services />
       <ContactLayout>
-        {/* <Quote /> */}
+        <Quote />
         <Contact />
       </ContactLayout>
     </div>
