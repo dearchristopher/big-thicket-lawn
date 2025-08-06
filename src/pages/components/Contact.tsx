@@ -30,15 +30,15 @@ export const Contact = () => {
                         </div>
                     </div>
 
-                    <div onClick={() => window.location.href = "mailto:contact@bigthicketlawn.com"} className={btnCls}>
+                    <div onClick={() => window.location.href = "mailto:info@bigthicketlawn.com"} className={btnCls}>
                         <div className="text-green-700 text-2xl"><Mail className='h-6 w-6' /></div>
                         <div className='grid grid-cols-[auto auto] items-center'>
                             <p className="text-sm text-gray-600 uppercase tracking-wide font-semibold">Email Us</p>
                             <a
-                                href="mailto:contact@bigthicketlawn.com"
+                                href="mailto:info@bigthicketlawn.com"
                                 className="text-lg font-bold text-green-700 hover:text-green-800 transition-colors font-main break-all"
                             >
-                                contact@bigthicketlawn.com
+                                info@bigthicketlawn.com
                             </a>
                         </div>
                     </div>
