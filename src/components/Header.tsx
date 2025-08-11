@@ -58,7 +58,7 @@ export const Header = () => {
                     </button>
 
                     {/* Header Logo */}
-                    <div className={`transition-all duration-300 px-4 ${showLogo ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
+                    <div className={`transition-all duration-300 px-4 ${showLogo ? 'opacity-100 translate-x-0 pl-10' : 'opacity-0 translate-x-4'}`}>
                         <Link to="/" className="text-white font-bold hover:text-green-200 transition-colors font-decorative">
                             <HeaderMower />
                         </Link>
