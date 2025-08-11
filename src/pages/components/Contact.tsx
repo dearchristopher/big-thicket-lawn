@@ -2,12 +2,12 @@ import { Mail, Phone } from "lucide-react"
 
 export const Contact = () => {
 
-    const btnCls = 'flex items-center gap-8 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors cursor-pointer'
+    const btnCls = 'flex items-center gap-8 p-4 bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md transform hover:scale-102'
 
     return (
-        <div className="bg-white shadow-lg rounded-2xl p-8 flex flex-col items-center h-fit">
+        <div className="bg-gradient-to-br from-white to-gray-50 shadow-xl rounded-2xl p-8 flex flex-col items-center h-fit border border-gray-100">
             <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-bold text-red-600 font-main">GET IN TOUCH</h3>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-red-600 to-red-700 bg-clip-text text-transparent font-main">GET IN TOUCH</h3>
             </div>
 
             <div className="w-full">

@@ -41,14 +41,14 @@ export const Pricing = () => {
             {/* Header */}
             <div className="text-center mb-6 md:mb-12">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-main mb-2">
-                    Service Pricing
+                    SERVICE PRICING
                 </h2>
                 <p className="text-xs md:text-sm text-gray-600 font-main px-2">
-                    Same great service, priced for your property size
+                    Top quality service at a price that makes sense
                 </p>
-                <div className="mt-3 md:mt-4 inline-block bg-red-600 text-white px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-semibold">
-                    ✨ New Customer Special: 20% Off First Service
-                </div>
+                {/* <div className="mt-3 md:mt-4 inline-block bg-red-600 text-white px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-semibold">
+                    ✨ New Customer Special: 10% Off First Service
+                </div> */}
             </div>
 
             {/* Pricing Grid */}
@@ -72,6 +72,9 @@ export const Pricing = () => {
             <div className="text-center mt-6 md:mt-8 text-gray-600 px-2">
                 <p className="text-xs md:text-sm">
                     * Prices may vary based on terrain and specific requirements
+                </p>
+                <p className="text-xs md:text-sm mt-2">
+                    Have a larger yard, commercial property, or need a custom quote? <span className="text-green-700 font-semibold cursor-pointer hover:underline" onClick={openEstimateModal}>Request an estimate</span> or <span className="text-green-700 font-semibold cursor-pointer hover:underline" onClick={() => window.location.href = "tel:14097193979"}>call us</span>!
                 </p>
                 <p className="text-xs md:text-sm mt-2 font-semibold text-green-700">
                     Free Estimates Available • No Contracts • Satisfaction Guaranteed

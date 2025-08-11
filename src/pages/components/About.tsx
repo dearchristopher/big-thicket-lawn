@@ -2,7 +2,7 @@ import { TreesIcon } from "lucide-react"
 
 export const About = () => {
     return (
-        <div id="about" className="bg-yellow-50 py-16 px-4">
+        <div id="about" className="bg-yellow-50 py-16 px-8">
             <div className="max-w-6xl mx-auto">
                 <div className="flex flex-col lg:flex-row items-center gap-12">
                     <div className="lg:w-1/2">
@@ -14,7 +14,7 @@ export const About = () => {
                             <p>
                                 We're a local family-owned business offering reliable, affordable lawn care with attention to detail.
                             </p>
-                            <p className="font-semibold text-green-700">
+                            <p className="font-semibold text-xl text-green-700">
                                 Serving Southeast Texas with pride.
                             </p>
                         </div>
@@ -23,7 +23,7 @@ export const About = () => {
                         <div className="bg-green-100 rounded-lg p-8 flex items-center justify-center">
                             <div className="text-center">
                                 <div className="text-6xl mb-4"><img src="/images/terrytodd.jpg" alt="Big Thicket Lawn Services - Owners" className="rounded" /></div>
-                                <p className="text-lg text-gray-600">Family-owned & operated</p>
+                                <p className="text-sm text-gray-600">Family-owned & operated</p>
                             </div>
                         </div>
                     </div>

@@ -55,7 +55,7 @@ export const Hero = () => {
                 <div className="flex flex-col gap-4">
                     <button
                         onClick={openEstimateModal}
-                        className="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors drop-shadow-lg drop-shadow-gray-800"
+                        className="cursor-pointer bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 rounded-xl text-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
                         Request Estimate
                     </button>

@@ -29,7 +29,7 @@ export const Header = () => {
     };
 
     return (
-        <nav className="sticky top-0 z-50 bg-green-700 text-white shadow-lg">
+        <nav className="sticky top-0 z-50 bg-gradient-to-r from-green-700 to-green-800 text-white shadow-xl backdrop-blur-sm">
             <div className="px-4 sm:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="hidden gap-4">
