@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { textShadow } from "../utils/text-classes"
 import { Bar } from "./bar"
 import { HeroLogo } from "./hero-logo"
@@ -7,7 +8,8 @@ import { Pricing } from "./Pricing";
 import { useIsMobile } from "../../hooks/useIsMobile";
 
 export const Hero = () => {
-    const { openEstimateModal, isEstimateModalOpen, closeEstimateModal } = useEstimateModal();
+    const { isEstimateModalOpen, closeEstimateModal } = useEstimateModal();
+    const navigate = useNavigate();
     const isMobile = useIsMobile();
     return (
 
@@ -54,7 +56,7 @@ export const Hero = () => {
 
                 <div className="flex flex-col gap-4">
                     <button
-                        onClick={openEstimateModal}
+                        onClick={() => navigate('/quote')}
                         className="cursor-pointer bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 rounded-xl text-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
                         Message Us

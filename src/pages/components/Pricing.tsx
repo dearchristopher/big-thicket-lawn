@@ -1,8 +1,8 @@
-import { useEstimateModal } from '../../hooks/useEstimateModal';
+import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '../../hooks/useIsMobile';
 
 export const Pricing = () => {
-    const { openEstimateModal } = useEstimateModal();
+    const navigate = useNavigate();
     const isMobile = useIsMobile();
 
     const pricingTiers = [
@@ -56,14 +56,14 @@ export const Pricing = () => {
                 // Mobile: 2x2 Grid layout for better visibility
                 <div className="grid grid-cols-2 gap-3 px-2">
                     {pricingTiers.map((tier, index) => (
-                        <PricingCard key={index} tier={tier} onGetStarted={openEstimateModal} isMobile={true} />
+                        <PricingCard key={index} tier={tier} onGetStarted={() => navigate('/quote')} isMobile={true} />
                     ))}
                 </div>
             ) : (
                 // Desktop: Grid layout
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
                     {pricingTiers.map((tier, index) => (
-                        <PricingCard key={index} tier={tier} onGetStarted={openEstimateModal} isMobile={false} />
+                        <PricingCard key={index} tier={tier} onGetStarted={() => navigate('/quote')} isMobile={false} />
                     ))}
                 </div>
             )}
@@ -74,7 +74,7 @@ export const Pricing = () => {
                     * Prices may vary based on terrain and specific requirements
                 </p>
                 <p className="text-xs md:text-sm mt-2">
-                    Have a larger yard, commercial property, or need a custom quote? <span className="text-green-700 font-semibold cursor-pointer hover:underline" onClick={openEstimateModal}>Request an estimate</span> or <span className="text-green-700 font-semibold cursor-pointer hover:underline" onClick={() => window.location.href = "tel:14097193979"}>call us</span>!
+                    Have a larger yard, commercial property, or need a custom quote? <span className="text-green-700 font-semibold cursor-pointer hover:underline" onClick={() => navigate('/quote')}>Request an estimate</span> or <span className="text-green-700 font-semibold cursor-pointer hover:underline" onClick={() => window.location.href = "tel:14097193979"}>call us</span>!
                 </p>
                 <p className="text-xs md:text-sm mt-2 font-semibold text-green-700">
                     Free Estimates Available • No Contracts • Satisfaction Guaranteed
