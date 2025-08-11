@@ -12,7 +12,8 @@ import { EstimateModalProvider } from "./contexts/EstimateModalContext";
 export default function App() {
   useEffect(() => {
     // Initialize Microsoft Clarity
-    clarity.init("Big Thicket Lawn");
+    // Replace with your actual Clarity Project ID (short alphanumeric code from dashboard)
+    clarity.init("ssxc6ul0zu");
   }, []);
 
   return (
