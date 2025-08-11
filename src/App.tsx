@@ -11,8 +11,6 @@ import { EstimateModalProvider } from "./contexts/EstimateModalContext";
 
 export default function App() {
   useEffect(() => {
-    // Initialize Microsoft Clarity
-    // Replace with your actual Clarity Project ID (short alphanumeric code from dashboard)
     clarity.init("ssxc6ul0zu");
   }, []);
 
