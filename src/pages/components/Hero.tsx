@@ -2,15 +2,17 @@ import { textShadow } from "../utils/text-classes"
 import { Bar } from "./bar"
 import { HeroLogo } from "./hero-logo"
 import { EstimateModal } from "../../components/EstimateModal";
-import { useState } from "react";
+import { useEstimateModal } from "../../hooks/useEstimateModal";
+import { Pricing } from "./Pricing";
+import { useIsMobile } from "../../hooks/useIsMobile";
 
 export const Hero = () => {
-    const [isEstimateModalOpen, setIsEstimateModalOpen] = useState(false);
-
+    const { openEstimateModal, isEstimateModalOpen, closeEstimateModal } = useEstimateModal();
+    const isMobile = useIsMobile();
     return (
 
         <div
-            className="relative h-screen bg-cover bg-center flex items-center justify-center bg-green-900"
+            className="relative min-h-screen bg-cover bg-center flex items-center flex-col justify-center bg-green-900 py-8"
             style={{
                 backgroundImage: "url('/images/lawn-placeholder.png')",
             }}
@@ -52,21 +54,24 @@ export const Hero = () => {
 
                 <div className="flex flex-col gap-4">
                     <button
-                        onClick={() => setIsEstimateModalOpen(true)}
+                        onClick={openEstimateModal}
                         className="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors drop-shadow-lg drop-shadow-gray-800"
                     >
                         Request Estimate
                     </button>
-                    <button onClick={() => window.location.href = "#contact"} className="cursor-pointer hover:underline text-white  px-8 py-4 rounded-lg text-xl font-bold transition-colors drop-shadow-lg drop-shadow-gray-800">
+                    <button onClick={() => window.location.href = !isMobile ? "#contact" : "tel:14097193979"} className="cursor-pointer hover:underline text-white  px-8 py-4 rounded-lg text-xl font-bold transition-colors drop-shadow-lg drop-shadow-gray-800">
                         Contact Us
                     </button>
                 </div>
+
+                <Pricing />
             </div>
 
-            {/* Estimate Modal */}
+
+
             <EstimateModal
                 isOpen={isEstimateModalOpen}
-                onClose={() => setIsEstimateModalOpen(false)}
+                onClose={closeEstimateModal}
             />
         </div>
     )
