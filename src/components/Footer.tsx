@@ -7,12 +7,12 @@ export const Footer = () => {
     return (
         <footer className="bg-gradient-to-br from-green-800 to-green-900 text-white py-8 md:py-12 px-4 md:px-8 shadow-2xl">
             <div className="max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start md:justify-center">
-                    <div className="flex flex-col items-center md:items-start">
-                        <Link to="/" className="mb-4 w-full">
+                <div className="flex flex-col md:flex-row gap-8 md:gap-8 md:items-start justify-center">
+                    <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
+                        <Link to="/" className="mb-4">
                             <FooterMower />
                         </Link>
-                        <p className="text-green-200 text-sm mt-2 text-center md:text-left max-w-64">
+                        <p className="text-green-200 text-sm text-center md:text-left max-w-64">
                             Professional lawn care services in Southeast Texas
                         </p>
                     </div>
@@ -46,21 +46,21 @@ export const Footer = () => {
                     {/* Contact Info */}
                     <div className="text-center md:text-left">
                         <h3 className="text-xl font-bold mb-4 font-decorative">Contact Us</h3>
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                             <p className="flex items-center justify-center md:justify-start gap-2">
-                                <span className="text-green-300"><Phone className='h-3 w-3  ' /></span>
+                                <span className="text-green-300"><Phone className='h-4 w-4' /></span>
                                 <a href="tel:14097193979" className="text-green-200 hover:text-white transition-colors">
                                     (409) 719-3979
                                 </a>
                             </p>
                             <p className="flex items-center justify-center md:justify-start gap-2">
-                                <span className="text-green-300"><Mail className='h-3 w-3 ' /></span>
+                                <span className="text-green-300"><Mail className='h-4 w-4' /></span>
                                 <a href="mailto:contact@bigthicketlawn.com" className="text-green-200 hover:text-white transition-colors">
                                     contact@bigthicketlawn.com
                                 </a>
                             </p>
                             <p className="flex items-center justify-center md:justify-start gap-2">
-                                <span className="text-green-300"><TreeDeciduous className='h-3 w-3' /></span>
+                                <span className="text-green-300"><TreeDeciduous className='h-4 w-4' /></span>
                                 <span className="text-green-200">Lumberton, TX</span>
                             </p>
                         </div>
