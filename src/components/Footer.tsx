@@ -7,7 +7,7 @@ export const Footer = () => {
     return (
         <footer className="bg-gradient-to-br from-green-800 to-green-900 text-white py-8 md:py-12 px-4 md:px-8 shadow-2xl">
             <div className="max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:justify-center">
+                <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start md:justify-center">
                     <div className="flex flex-col items-center md:items-start">
                         <Link to="/" className="mb-4 w-full">
                             <FooterMower />
