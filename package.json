@@ -12,6 +12,7 @@
     "test-email": "node test-email.js"
   },
   "dependencies": {
+    "@microsoft/clarity": "^1.0.0",
     "@tailwindcss/vite": "^4.1.11",
     "@types/leaflet": "^1.9.20",
     "@types/lodash": "^4.17.20",
