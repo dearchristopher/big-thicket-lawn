@@ -10,8 +10,6 @@ export default function BeforeAfterGallery() {
   const [isDragging, setIsDragging] = useState(false)
   
   const containerRef = useRef<HTMLDivElement>(null)
-  const touchStartX = useRef<number | null>(null)
-  const minSwipeDistance = 50
 
   const title = settings?.galleryTitle || 'Recent Transformations'
   const subtitle = settings?.gallerySubtitle || 'See the difference professional lawn care makes'
@@ -79,32 +77,6 @@ export default function BeforeAfterGallery() {
     setActiveIndex((prev) => (prev - 1 + galleries.length) % galleries.length)
   }
 
-  const onSwipeStart = (e: React.TouchEvent | React.MouseEvent) => {
-    if (isDragging) return
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-    touchStartX.current = clientX
-  }
-
-  const onSwipeEnd = (e: React.TouchEvent | React.MouseEvent) => {
-    if (isDragging || touchStartX.current === null) {
-      touchStartX.current = null
-      return
-    }
-    
-    const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX
-    const distance = touchStartX.current - clientX
-    
-    if (Math.abs(distance) > minSwipeDistance) {
-      if (distance > 0) {
-        nextGallery()
-      } else {
-        prevGallery()
-      }
-    }
-    
-    touchStartX.current = null
-  }
-
   return (
     <section id="gallery" className="py-16 bg-white border-y border-gray-200">
       <div className="max-w-6xl mx-auto px-4">
@@ -116,14 +88,7 @@ export default function BeforeAfterGallery() {
             ref={containerRef}
             className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-xl select-none"
             style={{ touchAction: 'pan-y' }}
-            onMouseDown={onSwipeStart}
-            onMouseUp={onSwipeEnd}
-            onMouseLeave={() => {
-              handleDragEnd()
-              touchStartX.current = null
-            }}
-            onTouchStart={onSwipeStart}
-            onTouchEnd={onSwipeEnd}
+            onMouseLeave={handleDragEnd}
           >
             <div className="absolute inset-0">
               <img
@@ -163,7 +128,7 @@ export default function BeforeAfterGallery() {
             />
 
             <div
-              className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-20 cursor-ew-resize"
+              className="absolute top-0 bottom-0 w-8 -ml-4 bg-transparent z-20 cursor-ew-resize touch-none"
               style={{left: `${sliderPosition}%`, touchAction: 'none'}}
               onMouseDown={(e) => {
                 e.preventDefault()
@@ -187,10 +152,13 @@ export default function BeforeAfterGallery() {
               }}
               onTouchEnd={handleDragEnd}
             >
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center pointer-events-none">
+              {/* Visible line */}
+              <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 bg-white shadow-lg" />
+              {/* Handle button - larger on mobile */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 sm:w-10 sm:h-10 bg-white rounded-full shadow-lg flex items-center justify-center pointer-events-none">
                 <div className="flex">
-                  <ChevronLeft className="w-4 h-4 text-gray-600" />
-                  <ChevronRight className="w-4 h-4 text-gray-600" />
+                  <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" />
+                  <ChevronRight className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" />
                 </div>
               </div>
             </div>

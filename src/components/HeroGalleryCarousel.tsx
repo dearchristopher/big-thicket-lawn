@@ -10,8 +10,6 @@ export const HeroGalleryCarousel = () => {
   const [isDragging, setIsDragging] = useState(false)
 
   const containerRef = useRef<HTMLDivElement>(null)
-  const touchStartX = useRef<number | null>(null)
-  const minSwipeDistance = 50
 
   // Filter galleries that have both before and after photos
   const sanityGalleries = galleries?.filter(
@@ -85,35 +83,6 @@ export const HeroGalleryCarousel = () => {
     setSliderPosition(parseInt(e.target.value))
   }
 
-  // Swipe detection for slide navigation
-  const onSwipeStart = (e: React.TouchEvent | React.MouseEvent) => {
-    if (isDragging) return
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
-    touchStartX.current = clientX
-    setIsInteracting(true)
-  }
-
-  const onSwipeEnd = (e: React.TouchEvent | React.MouseEvent) => {
-    setIsInteracting(false)
-    if (isDragging || touchStartX.current === null) {
-      touchStartX.current = null
-      return
-    }
-
-    const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX
-    const distance = touchStartX.current - clientX
-
-    if (Math.abs(distance) > minSwipeDistance) {
-      if (distance > 0) {
-        nextSlide()
-      } else {
-        prevSlide()
-      }
-    }
-
-    touchStartX.current = null
-  }
-
   return (
     validGalleries.length > 0 && <div className="w-full max-w-2xl mx-auto mt-6 relative px-12 sm:px-14">
       {/* Arrow Navigation */}
@@ -145,12 +114,7 @@ export const HeroGalleryCarousel = () => {
         onMouseLeave={() => {
           setIsInteracting(false)
           handleDragEnd()
-          touchStartX.current = null
         }}
-        onMouseDown={onSwipeStart}
-        onMouseUp={onSwipeEnd}
-        onTouchStart={onSwipeStart}
-        onTouchEnd={onSwipeEnd}
       >
         {/* After Image (background) */}
         <div className="absolute inset-0">
@@ -194,7 +158,7 @@ export const HeroGalleryCarousel = () => {
 
         {/* Slider Handle */}
         <div
-          className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-20 cursor-ew-resize"
+          className="absolute top-0 bottom-0 w-8 -ml-4 bg-transparent z-20 cursor-ew-resize touch-none"
           style={{ left: `${sliderPosition}%`, touchAction: 'none' }}
           onMouseDown={(e) => {
             e.preventDefault()
@@ -218,10 +182,13 @@ export const HeroGalleryCarousel = () => {
           }}
           onTouchEnd={handleDragEnd}
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center pointer-events-none">
+          {/* Visible line */}
+          <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 bg-white shadow-lg" />
+          {/* Handle button - larger on mobile */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 sm:w-10 sm:h-10 bg-white rounded-full shadow-lg flex items-center justify-center pointer-events-none">
             <div className="flex">
-              <ChevronLeft className="w-4 h-4 text-gray-600" />
-              <ChevronRight className="w-4 h-4 text-gray-600" />
+              <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" />
+              <ChevronRight className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" />
             </div>
           </div>
         </div>
@@ -234,7 +201,7 @@ export const HeroGalleryCarousel = () => {
         </p>
         {validGalleries.length > 1 && (
           <p className="text-green-200 text-xs mt-1">
-            {currentIndex + 1} / {validGalleries.length} | Drag to compare - Swipe to browse
+            {currentIndex + 1} / {validGalleries.length}
           </p>
         )}
       </div>

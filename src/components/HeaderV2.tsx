@@ -42,11 +42,10 @@ export const HeaderV2 = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        showLogo
-          ? 'bg-gradient-to-r from-green-700 to-green-800 shadow-xl'
-          : 'bg-gradient-to-r from-green-800/90 to-green-900/90 backdrop-blur-sm'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${showLogo
+        ? 'bg-gradient-to-r from-green-700 to-green-800 shadow-xl'
+        : 'bg-gradient-to-r from-green-800/90 to-green-900/90 backdrop-blur-sm'
+        }`}
     >
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
@@ -123,7 +122,7 @@ export const HeaderV2 = () => {
                 }}
                 className="bg-yellow-400 hover:bg-yellow-300 text-green-900 mx-4 py-3 rounded-lg font-bold mt-2"
               >
-                Get Free {navCtaText}
+                {navCtaText}
               </button>
             </nav>
           </div>
