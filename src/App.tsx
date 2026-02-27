@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import clarity from "@microsoft/clarity";
 
-import Home from "./pages/Home";
-import { Header } from "./components";
+import HomeV2 from "./pages/HomeV2";
+import { HeaderV2 } from "./components/HeaderV2";
 import { Footer } from "./components/Footer";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
@@ -19,10 +19,10 @@ export default function App() {
       <div className="min-h-screen bg-green-50">
         <Analytics />
         <SpeedInsights />
-        <Header />
+        <HeaderV2 />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/quote" element={<Home />} />
+          <Route path="/" element={<HomeV2 />} />
+          <Route path="/quote" element={<HomeV2 />} />
         </Routes>
         <Footer />
       </div>

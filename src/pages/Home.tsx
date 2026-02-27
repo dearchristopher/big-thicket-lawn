@@ -1,21 +1,22 @@
-
-import { Contact } from "./components/Contact";
-import { About } from "./components/About";
-import { Services } from "./components/Services";
-import { Hero } from "./components/Hero";
-import { ContactLayout } from "./components/ContactLayout";
-
+import {Contact} from './components/Contact'
+import {AboutDynamic} from './components/AboutDynamic'
+import {ServicesDynamic} from './components/ServicesDynamic'
+import {HeroDynamic} from './components/HeroDynamic'
+import {ContactLayout} from './components/ContactLayout'
+import TestimonialsSection from '../components/TestimonialsSection'
+import BeforeAfterGallery from '../components/BeforeAfterGallery'
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <Hero />
-      <About />
-      <Services />
+      <HeroDynamic />
+      <AboutDynamic />
+      <ServicesDynamic />
+      <BeforeAfterGallery />
+      <TestimonialsSection />
       <ContactLayout>
-        {/* <Quote /> */}
         <Contact />
       </ContactLayout>
     </div>
-  );
+  )
 }
