@@ -84,7 +84,7 @@ export const HeroGalleryCarousel = () => {
   }
 
   return (
-    validGalleries.length > 0 && <div className="w-full max-w-2xl mx-auto mt-6 relative px-12 sm:px-14">
+    validGalleries.length > 0 && <div className="w-full mt-6 relative px-2 sm:px-4">
       {/* Arrow Navigation */}
       {validGalleries.length > 1 && (
         <>
@@ -108,7 +108,7 @@ export const HeroGalleryCarousel = () => {
       {/* Before/After Slider */}
       <div
         ref={containerRef}
-        className="relative h-48 sm:h-56 md:h-64 rounded-xl overflow-hidden shadow-2xl border-4 border-white/20 select-none"
+        className="relative h-56 sm:h-72 md:h-80 lg:h-96 rounded-xl overflow-hidden shadow-2xl border-4 border-white/20 select-none"
         style={{ touchAction: 'pan-y' }}
         onMouseEnter={() => setIsInteracting(true)}
         onMouseLeave={() => {
