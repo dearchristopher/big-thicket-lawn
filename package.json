@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@microsoft/clarity": "^1.0.0",
+    "@sanity/client": "^7.16.0",
+    "@sanity/image-url": "^2.0.3",
     "@tailwindcss/vite": "^4.1.11",
     "@types/leaflet": "^1.9.20",
     "@types/lodash": "^4.17.20",
