@@ -60,6 +60,15 @@ export const queries = {
   // FAQ
   activeFAQs: `*[_type == "faq" && isActive == true] | order(orderIndex asc)`,
   faqsByCategory: (category: string) => `*[_type == "faq" && category == "${category}" && isActive == true] | order(orderIndex asc)`,
+  
+  // Pricing Tiers
+  activePricingTiers: `*[_type == "pricingTier" && isActive == true] | order(orderIndex asc)`,
+  
+  // Why Choose Us
+  activeWhyChooseUs: `*[_type == "whyChooseUs" && isActive == true] | order(orderIndex asc)`,
+  
+  // CTA Sections
+  ctaSectionById: (id: string) => `*[_type == "ctaSection" && sectionId.current == "${id}" && isActive == true][0]`,
 }
 
 // TypeScript types for Sanity documents
@@ -128,20 +137,69 @@ export interface FacebookImport {
 export interface SiteSettings {
   _id: string
   _type: 'siteSettings'
+  // Contact Info
   phoneNumber?: string
+  emailAddress?: string
   businessHours?: string
   serviceArea?: string
+  yearEstablished?: number
+  // Hero
   heroTitle?: string
   heroSubtitle?: string
   heroImageUrl?: string
+  heroServiceBadges?: string[]
+  heroPrimaryCta?: string
+  heroSecondaryCta?: string
+  // About
+  aboutTitle?: string
   aboutText?: unknown[] // Portable Text
+  aboutImageUrl?: string
+  aboutImageCaption?: string
+  // Pricing
+  pricingTitle?: string
+  pricingSubtitle?: string
+  pricingFooter?: string
+  pricingCtaText?: string
+  // Why Choose Us
+  whyChooseUsBadge?: string
+  whyChooseUsTitle?: string
+  whyChooseUsSubtitle?: string
+  whyChooseUsFooter?: string
+  // Testimonials
+  testimonialsTitle?: string
+  testimonialsSubtitle?: string
+  // Gallery
+  galleryTitle?: string
+  gallerySubtitle?: string
+  // FAQ
+  faqBadge?: string
+  faqTitle?: string
+  faqSubtitle?: string
+  faqCtaTitle?: string
+  faqCtaText?: string
+  faqCtaButtonText?: string
+  // Contact
+  contactTitle?: string
+  contactSubtitle?: string
+  contactDescription?: string
+  contactCallButtonText?: string
+  contactEmailButtonText?: string
+  contactFooter?: string
+  // Footer
+  footerTagline?: string
+  footerContactTitle?: string
+  // Trust Bar
+  trustBarItems?: {icon: string; text: string}[]
+  // Navigation
+  navLinks?: {label: string; href: string}[]
+  navCtaText?: string
+  // Social
   facebookPageUrl?: string
   facebookPageId?: string
   facebookAccessToken?: string
+  // SEO
   metaTitle?: string
   metaDescription?: string
-  yearEstablished?: number
-  ownerNames?: string
 }
 
 export interface FAQ {
@@ -151,5 +209,42 @@ export interface FAQ {
   answer: string
   category: string
   orderIndex: number
+  isActive: boolean
+}
+
+export interface PricingTier {
+  _id: string
+  _type: 'pricingTier'
+  size: string
+  price: number
+  description?: string
+  features: string[]
+  isPopular: boolean
+  orderIndex: number
+  isActive: boolean
+}
+
+export interface WhyChooseUsItem {
+  _id: string
+  _type: 'whyChooseUs'
+  title: string
+  description: string
+  highlight?: string
+  iconName?: string
+  orderIndex: number
+  isActive: boolean
+}
+
+export interface CTASection {
+  _id: string
+  _type: 'ctaSection'
+  sectionId: {current: string}
+  title: string
+  subtitle?: string
+  benefits?: string[]
+  primaryButtonText?: string
+  secondaryButtonText?: string
+  footerText?: string
+  backgroundColor?: 'blue' | 'green' | 'dark' | 'light'
   isActive: boolean
 }

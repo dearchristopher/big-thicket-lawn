@@ -49,6 +49,9 @@ export default defineType({
       options: {
         list: [
           {title: 'Lawn Mower', value: 'mower'},
+          {title: 'Shears/Trimming', value: 'shears'},
+          {title: 'Broom/Cleanup', value: 'broom'},
+          {title: 'Bush/Shaping', value: 'bush'},
           {title: 'Leaf/Tree', value: 'tree'},
           {title: 'Sparkles/Clean', value: 'sparkles'},
           {title: 'Droplet/Water', value: 'droplet'},

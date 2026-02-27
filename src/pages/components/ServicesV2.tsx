@@ -1,30 +1,29 @@
-import {useNavigate} from 'react-router-dom'
-import {useActiveServices} from '../../hooks/useSanity'
-import {Mower} from '../../components/icons/Mower'
-import {Shears} from '../../components/icons/Shears'
-import {Broom} from '../../components/icons/Broom'
-import {Bush} from '../../components/icons/Bush'
-import {ArrowRight} from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { useActiveServices, useSiteSettings } from '../../hooks/useSanity'
+import { Mower } from '../../components/icons/Mower'
+import { Shears } from '../../components/icons/Shears'
+import { Broom } from '../../components/icons/Broom'
+import { Bush } from '../../components/icons/Bush'
+import { ArrowRight } from 'lucide-react'
 
 // Icon mapping
-const iconMap: Record<string, React.ComponentType<{className?: string}>> = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  mower: Mower,
+  shears: Shears,
+  broom: Broom,
+  bush: Bush,
   Mower,
   Shears,
   Broom,
   Bush,
 }
 
-// Default pricing for services (TODO: Verify all pricing)
-const defaultPricing: Record<string, string> = {
-  Mowing: '$55+',
-  'Edging & Trimming': 'Included',
-  'Mulch & Cleanups': '$150+',
-  'Bush Shaping': '$45+',
-}
-
 export const ServicesV2 = () => {
   const navigate = useNavigate()
-  const {data: services} = useActiveServices()
+  const { data: services, loading } = useActiveServices()
+  const { data: settings } = useSiteSettings()
+
+  const subtitle = settings?.pricingSubtitle || 'From regular maintenance to seasonal projects, we handle it all with care and precision.'
 
   // Fallback services if Sanity data isn't loaded yet
   const defaultServices = [
@@ -32,33 +31,52 @@ export const ServicesV2 = () => {
       _id: 'mowing',
       name: 'Mowing',
       shortDescription: 'Professional lawn mowing with precision equipment',
-      iconName: 'Mower',
+      iconName: 'mower',
       pricingText: '$55+',
     },
     {
       _id: 'edging',
       name: 'Edging & Trimming',
       shortDescription: 'Clean edges and detailed trimming around obstacles',
-      iconName: 'Shears',
+      iconName: 'shears',
       pricingText: 'Included',
     },
     {
       _id: 'cleanups',
       name: 'Mulch & Cleanups',
       shortDescription: 'Seasonal cleanups and fresh mulch application',
-      iconName: 'Broom',
+      iconName: 'broom',
       pricingText: '$150+',
     },
     {
       _id: 'bushes',
       name: 'Bush Shaping',
       shortDescription: 'Professional shrub and bush trimming',
-      iconName: 'Bush',
+      iconName: 'bush',
       pricingText: '$45+',
     },
   ]
 
   const displayServices = services?.length ? services : defaultServices
+
+  if (loading) {
+    return (
+      <section id="services" className="py-16 md:py-24 bg-white border-t-4 border-yellow-400">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12 animate-pulse">
+            <div className="h-4 bg-green-200 rounded w-24 mx-auto mb-4"></div>
+            <div className="h-10 bg-gray-200 rounded w-128 mx-auto mb-4"></div>
+            <div className="h-6 bg-gray-200 rounded w-96 mx-auto"></div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-gray-50 rounded-2xl p-6 h-64 animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section id="services" className="py-16 md:py-24 bg-white border-t-4 border-yellow-400">
@@ -72,7 +90,7 @@ export const ServicesV2 = () => {
             Complete Lawn & Landscape Services
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            From regular maintenance to seasonal projects, we handle it all with care and precision.
+            {subtitle}
           </p>
         </div>
 
@@ -80,7 +98,7 @@ export const ServicesV2 = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {displayServices.map((service) => {
             const IconComponent = iconMap[service.iconName || ''] || Mower
-            const price = service.pricingText || defaultPricing[service.name] || 'Custom'
+            const price = service.pricingText || 'Custom'
 
             return (
               <div

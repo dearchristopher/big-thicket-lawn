@@ -2,13 +2,11 @@ import { HeroV2 } from './components/HeroV2'
 import { TrustBar } from '../components/TrustBar'
 import { PricingV2 } from './components/PricingV2'
 import BeforeAfterGallery from '../components/BeforeAfterGallery'
-import { WhyChooseUs } from './components/WhyChooseUs'
-import { ServicesV2 } from './components/ServicesV2'
+import { WhyChooseUsDynamic } from './components/WhyChooseUsDynamic'
+import { ServicesDynamic } from './components/ServicesDynamic'
 import TestimonialsSection from '../components/TestimonialsSection'
 import { FAQSection } from './components/FAQSection'
 import { FinalCTA } from './components/FinalCTA'
-import { ContactLayout } from './components/ContactLayout'
-import { Contact } from './components/Contact'
 import { FloatingCTA } from '../components/FloatingCTA'
 
 export default function HomeV2() {
@@ -18,13 +16,13 @@ export default function HomeV2() {
       <TrustBar />
       <PricingV2 />
       <BeforeAfterGallery />
-      <WhyChooseUs />
-      <ServicesV2 />
+      <WhyChooseUsDynamic />
+      <ServicesDynamic />
       <TestimonialsSection />
       <FAQSection />
-      <ContactLayout>
+      {/* <ContactLayout>
         <Contact />
-      </ContactLayout>
+      </ContactLayout> */}
       <FinalCTA />
       <FloatingCTA />
     </div>

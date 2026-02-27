@@ -1,17 +1,56 @@
-import {useState} from 'react'
-import {useFeaturedGalleries} from '../hooks/useSanity'
-import {ChevronLeft, ChevronRight} from 'lucide-react'
+import { useState, useRef, useCallback } from 'react'
+import { useAllGalleries, useSiteSettings } from '../hooks/useSanity'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default function BeforeAfterGallery() {
-  const {data: galleries, loading, error} = useFeaturedGalleries()
+  const { data: galleries, loading, error } = useAllGalleries()
+  const { data: settings } = useSiteSettings()
   const [activeIndex, setActiveIndex] = useState(0)
   const [sliderPositions, setSliderPositions] = useState<Record<string, number>>({})
+  const [isDragging, setIsDragging] = useState(false)
+  
+  const containerRef = useRef<HTMLDivElement>(null)
+  const touchStartX = useRef<number | null>(null)
+  const minSwipeDistance = 50
+
+  const title = settings?.galleryTitle || 'Recent Transformations'
+  const subtitle = settings?.gallerySubtitle || 'See the difference professional lawn care makes'
+
+  const handleDragStart = useCallback((clientX: number) => {
+    setIsDragging(true)
+    updateSliderPosition(clientX)
+  }, [])
+
+  const handleDragMove = useCallback((clientX: number) => {
+    if (!isDragging) return
+    updateSliderPosition(clientX)
+  }, [isDragging])
+
+  const handleDragEnd = useCallback(() => {
+    setIsDragging(false)
+  }, [])
+
+  const updateSliderPosition = (clientX: number) => {
+    if (!containerRef.current || !galleries || !galleries[activeIndex]) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const x = clientX - rect.left
+    let percentage = Math.max(0, Math.min(100, (x / rect.width) * 100))
+    
+    if (percentage < 5) percentage = 0
+    else if (percentage > 95) percentage = 100
+    
+    const galleryId = galleries[activeIndex]._id
+    setSliderPositions(prev => ({
+      ...prev,
+      [galleryId]: percentage,
+    }))
+  }
 
   if (loading) {
     return (
-      <section className="py-16">
+      <section id="gallery" className="py-16">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Recent Transformations</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">{title}</h2>
           <div className="animate-pulse h-96 bg-gray-200 rounded-lg"></div>
         </div>
       </section>
@@ -23,7 +62,7 @@ export default function BeforeAfterGallery() {
   }
 
   const currentGallery = galleries[activeIndex]
-  const sliderPosition = sliderPositions[currentGallery._id] || 50
+  const sliderPosition = sliderPositions[currentGallery._id] ?? 50
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSliderPositions({
@@ -40,61 +79,115 @@ export default function BeforeAfterGallery() {
     setActiveIndex((prev) => (prev - 1 + galleries.length) % galleries.length)
   }
 
+  const onSwipeStart = (e: React.TouchEvent | React.MouseEvent) => {
+    if (isDragging) return
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+    touchStartX.current = clientX
+  }
+
+  const onSwipeEnd = (e: React.TouchEvent | React.MouseEvent) => {
+    if (isDragging || touchStartX.current === null) {
+      touchStartX.current = null
+      return
+    }
+    
+    const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX
+    const distance = touchStartX.current - clientX
+    
+    if (Math.abs(distance) > minSwipeDistance) {
+      if (distance > 0) {
+        nextGallery()
+      } else {
+        prevGallery()
+      }
+    }
+    
+    touchStartX.current = null
+  }
+
   return (
     <section id="gallery" className="py-16 bg-white border-y border-gray-200">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-2">Recent Transformations</h2>
-        <p className="text-gray-600 text-center mb-8">
-          See the difference professional lawn care makes
-        </p>
+        <h2 className="text-3xl font-bold text-center mb-2">{title}</h2>
+        <p className="text-gray-600 text-center mb-8">{subtitle}</p>
 
         <div className="relative">
-          {/* Before/After Slider */}
-          <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-xl">
-            {/* Before Image */}
+          <div 
+            ref={containerRef}
+            className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-xl select-none"
+            style={{ touchAction: 'pan-y' }}
+            onMouseDown={onSwipeStart}
+            onMouseUp={onSwipeEnd}
+            onMouseLeave={() => {
+              handleDragEnd()
+              touchStartX.current = null
+            }}
+            onTouchStart={onSwipeStart}
+            onTouchEnd={onSwipeEnd}
+          >
             <div className="absolute inset-0">
-              <img
-                src={currentGallery.beforePhotoUrl}
-                alt={`${currentGallery.title} - Before`}
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute top-4 left-4 bg-white/90 px-3 py-1 rounded text-sm font-semibold">
-                Before
-              </span>
-            </div>
-
-            {/* After Image (clipped) */}
-            <div
-              className="absolute inset-0 overflow-hidden"
-              style={{clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`}}
-            >
               <img
                 src={currentGallery.afterPhotoUrl}
                 alt={`${currentGallery.title} - After`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover pointer-events-none"
+                draggable={false}
               />
-              <span className="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded text-sm font-semibold">
+              <span className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded text-sm font-semibold pointer-events-none">
                 After
               </span>
             </div>
 
-            {/* Slider Control */}
+            <div
+              className="absolute inset-0 overflow-hidden"
+              style={{clipPath: `inset(0 0 0 ${sliderPosition}%)`}}
+            >
+              <img
+                src={currentGallery.beforePhotoUrl}
+                alt={`${currentGallery.title} - Before`}
+                className="w-full h-full object-cover pointer-events-none"
+                draggable={false}
+              />
+              <span className="absolute top-4 right-4 bg-white/90 text-gray-800 px-3 py-1 rounded text-sm font-semibold pointer-events-none">
+                Before
+              </span>
+            </div>
+
             <input
               type="range"
               min="0"
               max="100"
               value={sliderPosition}
               onChange={handleSliderChange}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
+              className="hidden sm:block absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
               aria-label="Compare before and after"
             />
 
-            {/* Slider Handle */}
             <div
-              className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-20"
-              style={{left: `${sliderPosition}%`}}
+              className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-20 cursor-ew-resize"
+              style={{left: `${sliderPosition}%`, touchAction: 'none'}}
+              onMouseDown={(e) => {
+                e.preventDefault()
+                handleDragStart(e.clientX)
+              }}
+              onMouseMove={(e) => {
+                if (isDragging) {
+                  e.preventDefault()
+                  handleDragMove(e.clientX)
+                }
+              }}
+              onMouseUp={handleDragEnd}
+              onMouseLeave={handleDragEnd}
+              onTouchStart={(e) => {
+                e.preventDefault()
+                handleDragStart(e.touches[0].clientX)
+              }}
+              onTouchMove={(e) => {
+                e.preventDefault()
+                handleDragMove(e.touches[0].clientX)
+              }}
+              onTouchEnd={handleDragEnd}
             >
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center pointer-events-none">
                 <div className="flex">
                   <ChevronLeft className="w-4 h-4 text-gray-600" />
                   <ChevronRight className="w-4 h-4 text-gray-600" />
@@ -103,7 +196,6 @@ export default function BeforeAfterGallery() {
             </div>
           </div>
 
-          {/* Gallery Info */}
           <div className="mt-6 text-center">
             <h3 className="text-xl font-semibold">{currentGallery.title}</h3>
             {currentGallery.description && (
@@ -114,7 +206,6 @@ export default function BeforeAfterGallery() {
             </p>
           </div>
 
-          {/* Navigation */}
           {galleries.length > 1 && (
             <div className="flex justify-center items-center mt-6 gap-4">
               <button
@@ -139,7 +230,6 @@ export default function BeforeAfterGallery() {
             </div>
           )}
 
-          {/* Thumbnail Navigation */}
           {galleries.length > 1 && (
             <div className="flex justify-center gap-2 mt-4">
               {galleries.map((gallery, index) => (

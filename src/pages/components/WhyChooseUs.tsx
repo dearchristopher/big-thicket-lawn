@@ -7,21 +7,21 @@ const reasons = [
     icon: Home,
     title: 'Local & Family Owned',
     description:
-      "We're your neighbors in Lumberton. When you call, you speak directly with the owners—not a call center.",
+      "We're your neighbors in Lumberton. When you call, you speak directly with the owners, not a call center.",
     highlight: 'Lumberton Based',
   },
   {
     icon: Users,
     title: 'Owner-Operated Service',
     description:
-      "Terry and Todd personally handle your lawn care. The same friendly faces every time—no rotating crews.",
+      "Todd, Hunter, and Terry personally handle your lawn care. The same friendly faces every time, no rotating crews.",
     highlight: 'Since 2018',
   },
   {
     icon: Zap,
     title: 'Fast, Free Quotes',
     description:
-      "Get a quote the same day you reach out. No waiting, no hassle—just honest pricing upfront.",
+      "Get a quote the same day you reach out. No waiting, no hassle, just honest pricing upfront.",
     highlight: 'Same-Day Response',
   },
   {
@@ -46,7 +46,7 @@ export const WhyChooseUs = () => {
             The Big Thicket Difference
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            We're not a big franchise. We're your neighbors—and we treat your lawn like it's our own.
+            We're not a big franchise. We're your neighbors, and we treat your lawn like it's our own.
           </p>
         </div>
 

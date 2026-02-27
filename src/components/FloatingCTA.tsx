@@ -1,13 +1,13 @@
-import {useNavigate} from 'react-router-dom'
-import {MessageCircle, Phone, X} from 'lucide-react'
-import {useState, useEffect} from 'react'
-import {useSiteSettings} from '../hooks/useSanity'
+import { useNavigate } from 'react-router-dom'
+import { MessageCircle, Phone, X } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { useSiteSettings } from '../hooks/useSanity'
 
 // Mobile-only floating CTA that appears after scrolling past hero
 
 export const FloatingCTA = () => {
   const navigate = useNavigate()
-  const {data: settings} = useSiteSettings()
+  const { data: settings } = useSiteSettings()
   const [isVisible, setIsVisible] = useState(false)
   const [isDismissed, setIsDismissed] = useState(false)
 

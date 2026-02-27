@@ -4,7 +4,7 @@ import { Bar } from './bar'
 import { HeroLogo } from './hero-logo'
 import { EstimateModal } from '../../components/EstimateModal'
 import { useEstimateModal } from '../../hooks/useEstimateModal'
-import { Pricing } from './Pricing'
+import { PricingDynamic } from './PricingDynamic'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useSiteSettings } from '../../hooks/useSanity'
 
@@ -16,6 +16,9 @@ export const HeroDynamic = () => {
 
   const heroTitle = settings?.heroTitle || 'Family-Owned Lawn Care in Lumberton, TX'
   const heroImage = settings?.heroImageUrl || '/images/lawn-placeholder.png'
+  const serviceBadges = settings?.heroServiceBadges || ['Mowing', 'Trimming', 'Landscaping', 'Cleanups']
+  const primaryCta = settings?.heroPrimaryCta || 'Message Us'
+  const secondaryCta = settings?.heroSecondaryCta || 'Call Us'
 
   return (
     <div
@@ -40,22 +43,12 @@ export const HeroDynamic = () => {
 
         <div className="flex flex-col mb-8 gap-1">
           <div className={`flex flex-wrap justify-center gap-8 text-lg ${textShadow}`}>
-            <div className="flex items-center gap-2">
-              <span className="text-green-400">✓</span>
-              <span>Mowing</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-400">✓</span>
-              <span>Trimming</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-400">✓</span>
-              <span>Landscaping</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-400">✓</span>
-              <span>Cleanups</span>
-            </div>
+            {serviceBadges.map((badge) => (
+              <div key={badge} className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span>{badge}</span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -64,17 +57,17 @@ export const HeroDynamic = () => {
             onClick={() => navigate('/quote')}
             className="cursor-pointer bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 rounded-xl text-xl font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
-            Message Us
+            {primaryCta}
           </button>
           <button
             onClick={() => (window.location.href = !isMobile ? '#contact' : 'tel:14097193979')}
             className="cursor-pointer hover:underline text-white px-8 py-4 rounded-lg text-xl font-bold transition-colors drop-shadow-lg drop-shadow-gray-800"
           >
-            Call Us
+            {secondaryCta}
           </button>
         </div>
 
-        <Pricing />
+        <PricingDynamic />
       </div>
 
       <EstimateModal isOpen={isEstimateModalOpen} onClose={closeEstimateModal} />

@@ -1,17 +1,21 @@
-import {Link} from 'react-router-dom'
-import {FooterMower} from './HeaderMower'
-import {MowerTreeIcon} from './icons/MowerTree'
-import {Heart, Mail, Phone, TreeDeciduous, Clock, Facebook} from 'lucide-react'
-import {useSiteSettings} from '../hooks/useSanity'
+import { Link } from 'react-router-dom'
+import { FooterMower } from './HeaderMower'
+import { MowerTreeIcon } from './icons/MowerTree'
+import { Heart, Mail, Phone, TreeDeciduous, Clock, Facebook } from 'lucide-react'
+import { useSiteSettings } from '../hooks/useSanity'
 
 export const Footer = () => {
-  const {data: settings} = useSiteSettings()
+  const { data: settings } = useSiteSettings()
 
   const phone = settings?.phoneNumber || '(409) 719-3979'
   const phoneHref = phone.replace(/\D/g, '')
+  const email = settings?.emailAddress || 'contact@bigthicketlawn.com'
   const hours = settings?.businessHours || 'Mon-Fri: 8am-6pm, Sat: 8am-2pm'
-  const serviceArea = settings?.serviceArea || 'Lumberton, TX'
+  const serviceArea = settings?.serviceArea?.split(',')[0] || 'Lumberton, TX'
   const facebookUrl = settings?.facebookPageUrl
+  
+  const tagline = settings?.footerTagline || 'Professional lawn care services in Southeast Texas'
+  const contactTitle = settings?.footerContactTitle || 'Contact Us'
 
   return (
     <footer className="bg-gradient-to-br from-green-800 to-green-900 text-white py-8 md:py-12 px-4 md:px-8 shadow-2xl">
@@ -22,7 +26,7 @@ export const Footer = () => {
               <FooterMower />
             </Link>
             <p className="text-green-200 text-sm text-center md:text-left max-w-64">
-              Professional lawn care services in Southeast Texas
+              {tagline}
             </p>
           </div>
 
@@ -54,7 +58,7 @@ export const Footer = () => {
 
           {/* Contact Info */}
           <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold mb-4 font-decorative">Contact Us</h3>
+            <h3 className="text-xl font-bold mb-4 font-decorative">{contactTitle}</h3>
             <div className="space-y-3">
               <p className="flex items-center justify-center md:justify-start gap-2">
                 <span className="text-green-300">
@@ -69,10 +73,10 @@ export const Footer = () => {
                   <Mail className="h-4 w-4" />
                 </span>
                 <a
-                  href="mailto:contact@bigthicketlawn.com"
+                  href={`mailto:${email}`}
                   className="text-green-200 hover:text-white transition-colors"
                 >
-                  contact@bigthicketlawn.com
+                  {email}
                 </a>
               </p>
               <p className="flex items-center justify-center md:justify-start gap-2">

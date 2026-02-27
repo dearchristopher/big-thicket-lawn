@@ -1,17 +1,26 @@
-import {Link, useNavigate} from 'react-router-dom'
-import {HeaderMower} from './HeaderMower'
-import {useEffect, useState} from 'react'
-import {useSiteSettings} from '../hooks/useSanity'
-import {Menu, X, Phone} from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { HeaderMower } from './HeaderMower'
+import { useEffect, useState } from 'react'
+import { useSiteSettings } from '../hooks/useSanity'
+import { Menu, X, Phone } from 'lucide-react'
+
+const defaultNavLinks = [
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'Gallery', href: '#gallery' },
+  { label: 'Reviews', href: '#reviews' },
+  { label: 'FAQ', href: '#faq' },
+]
 
 export const HeaderV2 = () => {
   const navigate = useNavigate()
-  const {data: settings} = useSiteSettings()
+  const { data: settings } = useSiteSettings()
   const [showLogo, setShowLogo] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const phone = settings?.phoneNumber || '(409) 719-3979'
   const phoneHref = phone.replace(/\D/g, '')
+  const navLinks = settings?.navLinks || defaultNavLinks
+  const navCtaText = settings?.navCtaText || 'Get Quote'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,17 +32,10 @@ export const HeaderV2 = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navLinks = [
-    {label: 'Pricing', href: '#pricing'},
-    {label: 'Gallery', href: '#gallery'},
-    {label: 'Reviews', href: '#reviews'},
-    {label: 'FAQ', href: '#faq'},
-  ]
-
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href)
     if (element) {
-      element.scrollIntoView({behavior: 'smooth'})
+      element.scrollIntoView({ behavior: 'smooth' })
     }
     setIsMobileMenuOpen(false)
   }
@@ -79,7 +81,7 @@ export const HeaderV2 = () => {
               onClick={() => navigate('/quote')}
               className="bg-yellow-400 hover:bg-yellow-300 text-green-900 px-4 py-2 rounded-lg font-bold text-sm transition-colors"
             >
-              Get Quote
+              {navCtaText}
             </button>
           </div>
 
@@ -121,7 +123,7 @@ export const HeaderV2 = () => {
                 }}
                 className="bg-yellow-400 hover:bg-yellow-300 text-green-900 mx-4 py-3 rounded-lg font-bold mt-2"
               >
-                Get Free Quote
+                Get Free {navCtaText}
               </button>
             </nav>
           </div>

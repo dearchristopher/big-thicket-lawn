@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {sanityClient, queries, type Testimonial, type PhotoGallery, type Service, type SiteSettings, type FacebookImport, type FAQ} from '../lib/sanity'
+import {sanityClient, queries, type Testimonial, type PhotoGallery, type Service, type SiteSettings, type FacebookImport, type FAQ, type PricingTier, type WhyChooseUsItem, type CTASection} from '../lib/sanity'
 
 // Generic hook for fetching any Sanity query
 export function useSanityQuery<T>(query: string) {
@@ -69,4 +69,19 @@ export function useGalleriesByCategory(category: string) {
 // Hook for fetching FAQs
 export function useActiveFAQs() {
   return useSanityQuery<FAQ[]>(queries.activeFAQs)
+}
+
+// Hook for fetching pricing tiers
+export function useActivePricingTiers() {
+  return useSanityQuery<PricingTier[]>(queries.activePricingTiers)
+}
+
+// Hook for fetching Why Choose Us items
+export function useActiveWhyChooseUs() {
+  return useSanityQuery<WhyChooseUsItem[]>(queries.activeWhyChooseUs)
+}
+
+// Hook for fetching a CTA section by ID
+export function useCTASection(sectionId: string) {
+  return useSanityQuery<CTASection>(queries.ctaSectionById(sectionId))
 }
