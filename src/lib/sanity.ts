@@ -193,8 +193,9 @@ export interface SiteSettings {
   // Navigation
   navLinks?: {label: string; href: string}[]
   navCtaText?: string
-  // Social
+  // Social & Reviews
   facebookPageUrl?: string
+  googleReviewUrl?: string
   facebookPageId?: string
   facebookAccessToken?: string
   // SEO

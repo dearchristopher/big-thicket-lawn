@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom'
 import {useSiteSettings} from '../../hooks/useSanity'
-import {Phone, MessageCircle} from 'lucide-react'
+import {Phone, MessageCircle, Star} from 'lucide-react'
 import {useIsMobile} from '../../hooks/useIsMobile'
 import {Bar} from './bar'
 import {EstimateModal} from '../../components/EstimateModal'
@@ -10,7 +10,11 @@ import {HeroGalleryCarousel} from '../../components/HeroGalleryCarousel'
 
 // TODO: Verify all numbers and claims before going live
 
-export const HeroV2 = () => {
+interface HeroV2Props {
+  onOpenReviewModal?: () => void
+}
+
+export const HeroV2 = ({onOpenReviewModal}: HeroV2Props) => {
   const navigate = useNavigate()
   const isMobile = useIsMobile()
   const {data: settings} = useSiteSettings()
@@ -90,6 +94,17 @@ export const HeroV2 = () => {
         <div className="relative">
           <HeroGalleryCarousel />
         </div>
+
+        {/* Review Button */}
+        {onOpenReviewModal && (
+          <button
+            onClick={onOpenReviewModal}
+            className="mt-4 inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white/90 hover:text-white border border-white/20 hover:border-white/40 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200"
+          >
+            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+            Love our work? Leave a review!
+          </button>
+        )}
 
         {/* Trust Badges */}
         <div className="flex flex-wrap justify-center gap-4 mt-4 text-xs text-green-200">

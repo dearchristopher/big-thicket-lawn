@@ -376,11 +376,17 @@ export default defineType({
       description: 'Text for CTA button in header',
     }),
     
-    // Social Media
+    // Social Media & Reviews
     defineField({
       name: 'facebookPageUrl',
       title: 'Facebook Page URL',
       type: 'url',
+    }),
+    defineField({
+      name: 'googleReviewUrl',
+      title: 'Google Business Review URL',
+      type: 'url',
+      description: 'Direct link to leave a Google review (leave empty to show "Coming Soon")',
     }),
     defineField({
       name: 'facebookPageId',
