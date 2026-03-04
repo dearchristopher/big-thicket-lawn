@@ -23,6 +23,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomeV2 />} />
           <Route path="/quote" element={<HomeV2 />} />
+          <Route path="/review" element={<HomeV2 />} />
         </Routes>
         <Footer />
       </div>

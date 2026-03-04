@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import {useState, useEffect} from 'react'
 
 /**
- * Hook to detect if the URL has ?review=true query parameter
+ * Hook to detect if we're on the /review route or have ?review=true query parameter
  * Used to show prominent review modal and CTA instead of the quote CTA
  */
 export function useReviewMode(): boolean {
@@ -10,7 +10,9 @@ export function useReviewMode(): boolean {
   useEffect(() => {
     const checkReviewMode = () => {
       const params = new URLSearchParams(window.location.search)
-      setIsReviewMode(params.get('review') === '')
+      const isReviewRoute = window.location.pathname === '/review'
+      const isReviewQuery = params.get('review') === 'true'
+      setIsReviewMode(isReviewRoute || isReviewQuery)
     }
 
     checkReviewMode()

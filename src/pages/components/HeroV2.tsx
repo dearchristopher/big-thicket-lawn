@@ -1,12 +1,12 @@
-import {useNavigate} from 'react-router-dom'
-import {useSiteSettings} from '../../hooks/useSanity'
-import {Phone, MessageCircle, Star} from 'lucide-react'
-import {useIsMobile} from '../../hooks/useIsMobile'
-import {Bar} from './bar'
-import {EstimateModal} from '../../components/EstimateModal'
-import {useEstimateModal} from '../../hooks/useEstimateModal'
-import {HeroLogo} from './hero-logo'
-import {HeroGalleryCarousel} from '../../components/HeroGalleryCarousel'
+import { useNavigate } from 'react-router-dom'
+import { useSiteSettings } from '../../hooks/useSanity'
+import { Phone, MessageCircle, Star } from 'lucide-react'
+import { useIsMobile } from '../../hooks/useIsMobile'
+import { Bar } from './bar'
+import { EstimateModal } from '../../components/EstimateModal'
+import { useEstimateModal } from '../../hooks/useEstimateModal'
+import { HeroLogo } from './hero-logo'
+import { HeroGalleryCarousel } from '../../components/HeroGalleryCarousel'
 
 // TODO: Verify all numbers and claims before going live
 
@@ -14,11 +14,11 @@ interface HeroV2Props {
   onOpenReviewModal?: () => void
 }
 
-export const HeroV2 = ({onOpenReviewModal}: HeroV2Props) => {
+export const HeroV2 = ({ onOpenReviewModal }: HeroV2Props) => {
   const navigate = useNavigate()
   const isMobile = useIsMobile()
-  const {data: settings} = useSiteSettings()
-  const {isEstimateModalOpen, closeEstimateModal} = useEstimateModal()
+  const { data: settings } = useSiteSettings()
+  const { isEstimateModalOpen, closeEstimateModal } = useEstimateModal()
 
   const phone = settings?.phoneNumber || '(409) 719-3979'
   const phoneHref = phone.replace(/\D/g, '')
@@ -88,23 +88,23 @@ export const HeroV2 = ({onOpenReviewModal}: HeroV2Props) => {
             <Phone className="w-4 h-4" />
             Call {phone}
           </button>
+
+          {/* Review Button - Ghost Variant */}
+          {onOpenReviewModal && (
+            <button
+              onClick={onOpenReviewModal}
+              className="w-full sm:w-auto cursor-pointer bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+              Leave a Review
+            </button>
+          )}
         </div>
 
         {/* Gallery Carousel */}
         <div className="relative">
           <HeroGalleryCarousel />
         </div>
-
-        {/* Review Button */}
-        {onOpenReviewModal && (
-          <button
-            onClick={onOpenReviewModal}
-            className="mt-4 inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white/90 hover:text-white border border-white/20 hover:border-white/40 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200"
-          >
-            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            Love our work? Leave a review!
-          </button>
-        )}
 
         {/* Trust Badges */}
         <div className="flex flex-wrap justify-center gap-4 mt-4 text-xs text-green-200">
