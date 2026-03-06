@@ -1,18 +1,19 @@
-import {useState, useEffect} from 'react'
-import {Star, Facebook, X, ExternalLink, Heart} from 'lucide-react'
-import {useSiteSettings} from '../hooks/useSanity'
+import { useState, useEffect } from 'react'
+import { Star, Facebook, X, ExternalLink, Heart } from 'lucide-react'
+import { useSiteSettings } from '../hooks/useSanity'
 
 interface ReviewModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-export const ReviewModal = ({isOpen, onClose}: ReviewModalProps) => {
-  const {data: settings} = useSiteSettings()
+export const ReviewModal = ({ isOpen, onClose }: ReviewModalProps) => {
+  const { data: settings } = useSiteSettings()
   const [isVisible, setIsVisible] = useState(false)
 
   const facebookUrl = settings?.facebookPageUrl
-  const googleReviewUrl = settings?.googleReviewUrl
+  const googleReviewUrl = settings?.googleReviewUrl || 'https://g.page/r/CVvxhi9Zv5amEBM/review'
+  const yelpReviewUrl = settings?.yelpReviewUrl || 'https://www.yelp.com/writeareview/biz/qNkwDerKkc65IunGPwy4gg'
 
   // Handle animation
   useEffect(() => {
@@ -43,15 +44,15 @@ export const ReviewModal = ({isOpen, onClose}: ReviewModalProps) => {
   if (!isOpen) return null
 
   const hasFacebook = !!facebookUrl
-  const hasGoogle = !!googleReviewUrl
+  const hasGoogle = true // Google is always available with fallback URL
+  const hasYelp = true // Yelp is always available with fallback URL
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'
+          }`}
         onClick={onClose}
       />
 
@@ -79,7 +80,7 @@ export const ReviewModal = ({isOpen, onClose}: ReviewModalProps) => {
               <Star
                 key={i}
                 className="w-8 h-8 fill-yellow-400 text-yellow-400 animate-pulse"
-                style={{animationDelay: `${i * 100}ms`}}
+                style={{ animationDelay: `${i * 100}ms` }}
               />
             ))}
           </div>
@@ -90,6 +91,9 @@ export const ReviewModal = ({isOpen, onClose}: ReviewModalProps) => {
           <p className="text-green-100">
             We&apos;d be honored if you&apos;d share your experience!
           </p>
+          <p className="text-yellow-300 text-sm mt-1 font-medium">
+            Google reviews help others decide to work with us!
+          </p>
         </div>
 
         {/* Body */}
@@ -99,36 +103,15 @@ export const ReviewModal = ({isOpen, onClose}: ReviewModalProps) => {
             can trust.
           </p>
 
-          {/* Review Options */}
+          {/* Review Options - Google first, then Facebook, then Yelp */}
           <div className="space-y-3">
-            {/* Facebook */}
-            {hasFacebook && (
-              <a
-                href={`${facebookUrl}/reviews`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 rounded-xl bg-[#1877F2]/5 border-2 border-[#1877F2]/20 hover:border-[#1877F2] hover:bg-[#1877F2]/10 transition-all group"
-              >
-                <div className="w-12 h-12 rounded-full bg-[#1877F2] flex items-center justify-center text-white shrink-0">
-                  <Facebook className="w-6 h-6" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-gray-800 group-hover:text-[#1877F2] transition-colors">
-                    Review on Facebook
-                  </h3>
-                  <p className="text-sm text-gray-500">Share with our community</p>
-                </div>
-                <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#1877F2] transition-colors" />
-              </a>
-            )}
-
-            {/* Google - only show if URL is configured */}
+            {/* Google - Priority #1 */}
             {hasGoogle && (
               <a
                 href={googleReviewUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 border-2 border-gray-200 hover:border-green-500 hover:bg-green-50 transition-all group"
+                className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-300 hover:border-green-500 hover:from-green-100 hover:to-green-200 transition-all group shadow-sm"
               >
                 <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-gray-600 shrink-0 shadow-sm">
                   <svg className="w-6 h-6" viewBox="0 0 24 24">
@@ -151,19 +134,63 @@ export const ReviewModal = ({isOpen, onClose}: ReviewModalProps) => {
                   </svg>
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-gray-800 group-hover:text-green-600 transition-colors">
+                  <h3 className="font-bold text-gray-800 group-hover:text-green-700 transition-colors">
                     Review on Google
                   </h3>
-                  <p className="text-sm text-gray-500">Help others find us</p>
+                  <p className="text-sm text-green-700 font-medium">Most helpful for our business and our customers</p>
                 </div>
-                <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-green-500 transition-colors" />
+                <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-green-600 transition-colors" />
               </a>
             )}
 
-            {/* No platforms available message */}
-            {!hasFacebook && !hasGoogle && (
+            {/* Facebook - Priority #2 */}
+            {hasFacebook && (
+              <a
+                href={`${facebookUrl}/reviews`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 p-4 rounded-xl bg-[#1877F2]/5 border-2 border-[#1877F2]/20 hover:border-[#1877F2] hover:bg-[#1877F2]/10 transition-all group"
+              >
+                <div className="w-12 h-12 rounded-full bg-[#1877F2] flex items-center justify-center text-white shrink-0">
+                  <Facebook className="w-6 h-6" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-gray-800 group-hover:text-[#1877F2] transition-colors">
+                    Review on Facebook
+                  </h3>
+                  <p className="text-sm text-gray-500">Share with our community</p>
+                </div>
+                <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-[#1877F2] transition-colors" />
+              </a>
+            )}
+
+            {/* Yelp - only show if URL is configured */}
+            {hasYelp && (
+              <a
+                href={yelpReviewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 p-4 rounded-xl bg-red-50 border-2 border-red-200 hover:border-red-500 hover:bg-red-100 transition-all group"
+              >
+                <div className="w-12 h-12 rounded-full bg-[#FF1A1A] flex items-center justify-center text-white shrink-0 shadow-sm">
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 14.5h-2.257l-.918-2.522-1.056 2.522H9.93l.795-1.987H9.36l-.555 1.987H7.5l1.68-5.5h2.14l.818 2.22.936-2.22h2.18l-1.65 5.5h1.896v1.5z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-gray-800 group-hover:text-red-600 transition-colors">
+                    Review on Yelp
+                  </h3>
+                  <p className="text-sm text-gray-500">Share your experience</p>
+                </div>
+                <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors" />
+              </a>
+            )}
+
+            {/* Only shown if somehow all platforms unavailable */}
+            {!hasFacebook && !hasGoogle && !hasYelp && (
               <div className="text-center p-4 text-gray-500">
-                Review links not configured. Please check back later!
+                Review links temporarily unavailable. Please check back later!
               </div>
             )}
           </div>

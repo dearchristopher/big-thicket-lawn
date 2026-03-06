@@ -196,6 +196,7 @@ export interface SiteSettings {
   // Social & Reviews
   facebookPageUrl?: string
   googleReviewUrl?: string
+  yelpReviewUrl?: string
   facebookPageId?: string
   facebookAccessToken?: string
   // SEO

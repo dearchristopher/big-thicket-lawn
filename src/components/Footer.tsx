@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { FooterMower } from './HeaderMower'
 import { MowerTreeIcon } from './icons/MowerTree'
-import { Heart, Mail, Phone, TreeDeciduous, Clock, Facebook } from 'lucide-react'
+import { Heart, Mail, Phone, TreeDeciduous, Clock, Facebook, MapPin } from 'lucide-react'
 import { useSiteSettings } from '../hooks/useSanity'
 
 export const Footer = () => {
@@ -106,6 +106,19 @@ export const Footer = () => {
                   </a>
                 </p>
               )}
+              <p className="flex items-center justify-center md:justify-start gap-2">
+                <span className="text-green-300">
+                  <MapPin className="h-4 w-4" />
+                </span>
+                <a
+                  href="https://g.page/r/CVvxhi9Zv5amEBM/review"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-200 hover:text-white transition-colors"
+                >
+                  Review us on Google
+                </a>
+              </p>
             </div>
           </div>
         </div>

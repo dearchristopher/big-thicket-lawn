@@ -1,4 +1,4 @@
-import { Mail, Phone } from "lucide-react"
+import { Mail, Phone, MapPin } from "lucide-react"
 import { useSiteSettings } from '../../hooks/useSanity'
 
 export const Contact = () => {
@@ -55,6 +55,21 @@ export const Contact = () => {
                         </div>
                     </div>
                 </div>
+
+                <a
+                    href="https://g.page/r/CVvxhi9Zv5amEBM/review"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md transform hover:scale-102 group"
+                >
+                    <div className="text-blue-600 text-2xl group-hover:text-blue-700">
+                        <MapPin className="h-6 w-6" />
+                    </div>
+                    <div className="grid grid-cols-[auto_auto] items-center">
+                        <p className="text-sm text-gray-600 uppercase tracking-wide font-semibold">Find us on</p>
+                        <span className="text-lg font-bold text-blue-700 hover:text-blue-800 transition-colors font-main">Google Maps</span>
+                    </div>
+                </a>
 
                 <div className="text-center pt-4 border-t border-gray-200">
                     <p className="text-sm text-gray-500 font-semibold">

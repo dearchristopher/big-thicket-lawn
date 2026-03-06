@@ -22,16 +22,10 @@ export const ReviewCTA = () => {
   const phoneHref = phone.replace(/\D/g, '')
   const facebookUrl = settings?.facebookPageUrl
   const googleReviewUrl = settings?.googleReviewUrl
+  const yelpReviewUrl = settings?.yelpReviewUrl
 
+  // Google is always first/prioritized with fallback URL
   const reviewPlatforms: ReviewPlatform[] = [
-    {
-      id: 'facebook',
-      name: 'Facebook',
-      icon: <Facebook className="w-6 h-6" />,
-      url: facebookUrl ? `${facebookUrl}/reviews` : '#',
-      description: 'Share your experience with our community',
-      available: !!facebookUrl,
-    },
     {
       id: 'google',
       name: 'Google',
@@ -43,11 +37,29 @@ export const ReviewCTA = () => {
           <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
         </svg>
       ),
-      url: googleReviewUrl || '#',
-      description: googleReviewUrl 
-        ? 'Help others find us on Google'
-        : 'Coming soon - help others find us on Google',
-      available: !!googleReviewUrl,
+      url: googleReviewUrl || 'https://g.page/r/CVvxhi9Zv5amEBM/review',
+      description: 'Most helpful for local search - our top recommendation!',
+      available: true,
+    },
+    {
+      id: 'facebook',
+      name: 'Facebook',
+      icon: <Facebook className="w-6 h-6" />,
+      url: facebookUrl ? `${facebookUrl}/reviews` : '#',
+      description: 'Share your experience with our community',
+      available: !!facebookUrl,
+    },
+    {
+      id: 'yelp',
+      name: 'Yelp',
+      icon: (
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 14.5h-2.257l-.918-2.522-1.056 2.522H9.93l.795-1.987H9.36l-.555 1.987H7.5l1.68-5.5h2.14l.818 2.22.936-2.22h2.18l-1.65 5.5h1.896v1.5z"/>
+        </svg>
+      ),
+      url: yelpReviewUrl || 'https://www.yelp.com/writeareview/biz/qNkwDerKkc65IunGPwy4gg',
+      description: 'Also on Yelp',
+      available: true,
     },
   ]
 
@@ -142,38 +154,55 @@ export const ReviewCTA = () => {
               </h3>
               <p className="text-gray-600">
                 Your feedback helps other homeowners find quality lawn care they can trust.
+                <span className="block mt-1 text-sm text-green-600 font-medium">
+                  Google reviews help us the most!
+                </span>
               </p>
             </div>
 
-            {/* Right: Buttons */}
+            {/* Right: Buttons - Google prioritized first */}
             <div className="flex flex-col sm:flex-row gap-3">
+              {/* Google - Primary/Highest Priority */}
+              <a
+                href="https://g.page/r/CVvxhi9Zv5amEBM/review"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24">
+                  <path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                  <path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                </svg>
+                Review on Google
+              </a>
+
+              {/* Facebook - Secondary option */}
               {facebookUrl && (
                 <a
                   href={`${facebookUrl}/reviews`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-[#1877F2] hover:bg-[#166fe5] text-white px-6 py-3 rounded-xl font-semibold transition-colors shadow-md"
+                  className="flex items-center justify-center gap-2 bg-white border-2 border-[#1877F2]/30 hover:border-[#1877F2] hover:bg-[#1877F2]/5 text-gray-700 px-6 py-3 rounded-xl font-semibold transition-all shadow-md"
                 >
-                  <Facebook className="w-5 h-5" />
-                  Review on Facebook
+                  <Facebook className="w-5 h-5 text-[#1877F2]" />
+                  Facebook
                 </a>
               )}
-              {googleReviewUrl && (
-                <a
-                  href={googleReviewUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-white border-2 border-gray-200 hover:border-green-500 hover:bg-green-50 text-gray-700 px-6 py-3 rounded-xl font-semibold transition-colors shadow-md"
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                  </svg>
-                  Review on Google
-                </a>
-              )}
+
+              {/* Yelp - Tertiary */}
+              <a
+                href={yelpReviewUrl || 'https://www.yelp.com/writeareview/biz/qNkwDerKkc65IunGPwy4gg'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-white border-2 border-gray-200 hover:border-red-400 hover:bg-red-50 text-gray-700 px-6 py-3 rounded-xl font-semibold transition-all shadow-sm"
+              >
+                <svg className="w-5 h-5 text-[#FF1A1A]" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 14.5h-2.257l-.918-2.522-1.056 2.522H9.93l.795-1.987H9.36l-.555 1.987H7.5l1.68-5.5h2.14l.818 2.22.936-2.22h2.18l-1.65 5.5h1.896v1.5z"/>
+                </svg>
+                Yelp
+              </a>
             </div>
           </div>
         </div>

@@ -386,7 +386,13 @@ export default defineType({
       name: 'googleReviewUrl',
       title: 'Google Business Review URL',
       type: 'url',
-      description: 'Direct link to leave a Google review (leave empty to show "Coming Soon")',
+      description: 'Direct link to leave a Google review (leave empty to hide)',
+    }),
+    defineField({
+      name: 'yelpReviewUrl',
+      title: 'Yelp Review URL',
+      type: 'url',
+      description: 'Direct link to your Yelp page for reviews (leave empty to hide)',
     }),
     defineField({
       name: 'facebookPageId',
