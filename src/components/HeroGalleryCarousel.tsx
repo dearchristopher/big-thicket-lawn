@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 export const HeroGalleryCarousel = () => {
   const { data: galleries } = useFeaturedGalleries()
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [sliderPosition, setSliderPosition] = useState(50)
+  const [rangeValue, setRangeValue] = useState(50)
   const [isInteracting, setIsInteracting] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set())
@@ -15,16 +15,14 @@ export const HeroGalleryCarousel = () => {
   const isDraggingRef = useRef(false)
   const rafRef = useRef<number | null>(null)
   const targetPositionRef = useRef(50)
+  const sliderPosRef = useRef(50)
 
-  // Filter galleries that have both before and after photos
   const sanityGalleries = galleries?.filter(
     (g) => g.beforePhotoUrl && g.afterPhotoUrl
   ) || []
 
-  // Use test data if no Sanity galleries exist
   const validGalleries = sanityGalleries.length > 0 ? sanityGalleries : []
 
-  // Handle image load events
   const handleImageLoad = useCallback((imageUrl: string) => {
     setLoadedImages(prev => {
       const newSet = new Set(prev)
@@ -33,31 +31,33 @@ export const HeroGalleryCarousel = () => {
     })
   }, [])
 
-  // Check if current slide images are loaded
   const currentGallery = validGalleries[currentIndex]
   const afterImageLoaded = currentGallery ? loadedImages.has(currentGallery.afterPhotoUrl) : false
   const beforeImageLoaded = currentGallery ? loadedImages.has(currentGallery.beforePhotoUrl) : false
   const imagesReady = afterImageLoaded && beforeImageLoaded
 
-  // Smooth slider update using requestAnimationFrame
+  const syncSliderPosition = useCallback((value: number) => {
+    sliderPosRef.current = value
+    targetPositionRef.current = value
+    if (containerRef.current) {
+      containerRef.current.style.setProperty('--slider-pos', `${value}%`)
+    }
+  }, [])
+
   const updateSliderSmooth = useCallback(() => {
-    setSliderPosition(prev => {
-      const diff = targetPositionRef.current - prev
-      // Smooth interpolation - move 25% of the way each frame
-      const newPos = prev + diff * 0.25
-      // Stop if very close
-      if (Math.abs(diff) < 0.5) {
-        return targetPositionRef.current
-      }
-      return newPos
-    })
-    
+    const diff = targetPositionRef.current - sliderPosRef.current
+    const newPos = Math.abs(diff) < 0.5
+      ? targetPositionRef.current
+      : sliderPosRef.current + diff * 0.25
+    sliderPosRef.current = newPos
+    if (containerRef.current) {
+      containerRef.current.style.setProperty('--slider-pos', `${newPos}%`)
+    }
     if (isDraggingRef.current) {
       rafRef.current = requestAnimationFrame(updateSliderSmooth)
     }
   }, [])
 
-  // Update target position (called on mouse move)
   const updateTargetPosition = useCallback((clientX: number) => {
     if (!containerRef.current) return
     const rect = containerRef.current.getBoundingClientRect()
@@ -70,9 +70,9 @@ export const HeroGalleryCarousel = () => {
     targetPositionRef.current = percentage
   }, [])
 
-  // All useCallback hooks must be called before any early returns
+  const interactionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
   const handleDragStart = useCallback((clientX: number) => {
-    // Clear any pending interaction timeout
     if (interactionTimeoutRef.current) {
       clearTimeout(interactionTimeoutRef.current)
       interactionTimeoutRef.current = null
@@ -81,7 +81,6 @@ export const HeroGalleryCarousel = () => {
     setIsDragging(true)
     setIsInteracting(true)
     updateTargetPosition(clientX)
-    // Start the animation loop
     if (rafRef.current) cancelAnimationFrame(rafRef.current)
     rafRef.current = requestAnimationFrame(updateSliderSmooth)
   }, [updateTargetPosition, updateSliderSmooth])
@@ -91,8 +90,6 @@ export const HeroGalleryCarousel = () => {
     updateTargetPosition(clientX)
   }, [updateTargetPosition])
 
-  const interactionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-
   const handleDragEnd = useCallback(() => {
     isDraggingRef.current = false
     setIsDragging(false)
@@ -100,32 +97,29 @@ export const HeroGalleryCarousel = () => {
       cancelAnimationFrame(rafRef.current)
       rafRef.current = null
     }
-    // Snap to final position
-    setSliderPosition(targetPositionRef.current)
-    
-    // Keep isInteracting true for 3 seconds after release (grace period)
+    syncSliderPosition(targetPositionRef.current)
+
     if (interactionTimeoutRef.current) {
       clearTimeout(interactionTimeoutRef.current)
     }
     interactionTimeoutRef.current = setTimeout(() => {
       setIsInteracting(false)
     }, 3000)
-  }, [])
+  }, [syncSliderPosition])
 
-  // Auto-advance carousel (pauses when user is interacting)
   useEffect(() => {
     if (validGalleries.length <= 1) return
     if (isInteracting) return
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % validGalleries.length)
-      setSliderPosition(50)
+      syncSliderPosition(50)
+      setRangeValue(50)
     }, 6000)
 
     return () => clearInterval(interval)
-  }, [validGalleries.length, isInteracting])
+  }, [validGalleries.length, isInteracting, syncSliderPosition])
 
-  // Cleanup interaction timeout on unmount
   useEffect(() => {
     return () => {
       if (interactionTimeoutRef.current) {
@@ -134,15 +128,14 @@ export const HeroGalleryCarousel = () => {
     }
   }, [])
 
-  // Preload adjacent images for smoother navigation
   useEffect(() => {
     if (validGalleries.length <= 1) return
-    
+
     const preloadIndices = [
       (currentIndex + 1) % validGalleries.length,
       (currentIndex - 1 + validGalleries.length) % validGalleries.length
     ]
-    
+
     preloadIndices.forEach(index => {
       const gallery = validGalleries[index]
       if (!loadedImages.has(gallery.afterPhotoUrl)) {
@@ -158,7 +151,6 @@ export const HeroGalleryCarousel = () => {
     })
   }, [currentIndex, validGalleries, loadedImages, handleImageLoad])
 
-  // Early return after all hooks
   if (validGalleries.length === 0) {
     return null
   }
@@ -168,7 +160,8 @@ export const HeroGalleryCarousel = () => {
     setIsTransitioning(true)
     setTimeout(() => {
       setCurrentIndex((prev) => (prev + 1) % validGalleries.length)
-      setSliderPosition(50)
+      syncSliderPosition(50)
+      setRangeValue(50)
       setIsTransitioning(false)
     }, 150)
   }
@@ -178,18 +171,20 @@ export const HeroGalleryCarousel = () => {
     setIsTransitioning(true)
     setTimeout(() => {
       setCurrentIndex((prev) => (prev - 1 + validGalleries.length) % validGalleries.length)
-      setSliderPosition(50)
+      syncSliderPosition(50)
+      setRangeValue(50)
       setIsTransitioning(false)
     }, 150)
   }
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSliderPosition(parseInt(e.target.value))
+    const val = parseInt(e.target.value)
+    setRangeValue(val)
+    syncSliderPosition(val)
   }
 
   return (
     validGalleries.length > 0 && <div className="w-full mt-6 relative px-2 sm:px-4">
-      {/* Arrow Navigation */}
       {validGalleries.length > 1 && (
         <>
           <button
@@ -209,13 +204,11 @@ export const HeroGalleryCarousel = () => {
         </>
       )}
 
-      {/* Before/After Slider */}
       <div
         ref={containerRef}
         className="relative h-56 sm:h-72 md:h-80 lg:h-96 rounded-xl overflow-hidden shadow-2xl border-4 border-white/20 select-none"
         style={{ touchAction: 'pan-y' }}
         onMouseEnter={() => {
-          // Clear any pending timeout when user hovers back
           if (interactionTimeoutRef.current) {
             clearTimeout(interactionTimeoutRef.current)
             interactionTimeoutRef.current = null
@@ -226,7 +219,6 @@ export const HeroGalleryCarousel = () => {
           handleDragEnd()
         }}
       >
-        {/* Loading State - Gradient placeholder */}
         {!imagesReady && (
           <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center z-10 animate-pulse">
             <div className="flex flex-col items-center gap-3">
@@ -236,9 +228,7 @@ export const HeroGalleryCarousel = () => {
           </div>
         )}
 
-        {/* Slide Content with crossfade */}
         <div className={`absolute inset-0 transition-opacity duration-150 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-        {/* After Image (background) */}
         <div className={`absolute inset-0 transition-opacity duration-500 ${imagesReady ? 'opacity-100' : 'opacity-0'}`}>
           <img
             src={currentGallery.afterPhotoUrl}
@@ -252,10 +242,9 @@ export const HeroGalleryCarousel = () => {
           </span>
         </div>
 
-        {/* Before Image (clipped) */}
         <div
           className={`absolute inset-0 overflow-hidden transition-opacity duration-500 ${imagesReady ? 'opacity-100' : 'opacity-0'}`}
-          style={{ clipPath: `inset(0 0 0 ${sliderPosition}%)` }}
+          style={{ clipPath: 'inset(0 0 0 var(--slider-pos, 50%))' }}
         >
           <img
             src={currentGallery.beforePhotoUrl}
@@ -269,21 +258,19 @@ export const HeroGalleryCarousel = () => {
           </span>
         </div>
 
-        {/* Slider Control - Desktop */}
         <input
           type="range"
           min="0"
           max="100"
-          value={sliderPosition}
+          value={rangeValue}
           onChange={handleSliderChange}
           className="hidden sm:block absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
           aria-label="Compare before and after"
         />
 
-        {/* Slider Handle */}
         <div
           className="absolute top-0 bottom-0 w-8 -ml-4 bg-transparent z-20 cursor-ew-resize touch-none"
-          style={{ left: `${sliderPosition}%`, touchAction: 'none' }}
+          style={{ left: 'var(--slider-pos, 50%)', touchAction: 'none' }}
           onMouseDown={(e) => {
             e.preventDefault()
             handleDragStart(e.clientX)
@@ -306,9 +293,7 @@ export const HeroGalleryCarousel = () => {
           }}
           onTouchEnd={handleDragEnd}
         >
-          {/* Visible line */}
           <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 bg-white shadow-lg" />
-          {/* Handle button - larger on mobile */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 sm:w-10 sm:h-10 bg-white rounded-full shadow-lg flex items-center justify-center pointer-events-none">
             <div className="flex">
               <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" />
@@ -319,7 +304,6 @@ export const HeroGalleryCarousel = () => {
         </div>
       </div>
 
-      {/* Gallery Info */}
       <div className="mt-3 text-center">
         <p className="text-white text-sm font-medium drop-shadow-md">
           {currentGallery.title}
@@ -331,7 +315,6 @@ export const HeroGalleryCarousel = () => {
         )}
       </div>
 
-      {/* Navigation Dots */}
       {validGalleries.length > 1 && (
         <div className="flex justify-center gap-2 mt-3">
           {validGalleries.map((_, index) => (
@@ -339,7 +322,8 @@ export const HeroGalleryCarousel = () => {
               key={index}
               onClick={() => {
                 setCurrentIndex(index)
-                setSliderPosition(50)
+                syncSliderPosition(50)
+                setRangeValue(50)
               }}
               className={`w-2 h-2 rounded-full transition-colors ${index === currentIndex ? 'bg-white' : 'bg-white/40'
                 }`}

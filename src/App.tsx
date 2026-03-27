@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import clarity from "@microsoft/clarity";
+import posthog from "posthog-js";
 
 import HomeV2 from "./pages/HomeV2";
 import { HeaderV2 } from "./components/HeaderV2";
@@ -11,7 +11,10 @@ import { EstimateModalProvider } from "./contexts/EstimateModalContext";
 
 export default function App() {
   useEffect(() => {
-    clarity.init("ssxc6ul0zu");
+    posthog.init(import.meta.env.VITE_POSTHOG_KEY, {
+      api_host: import.meta.env.VITE_POSTHOG_HOST,
+      person_profiles: "identified_only",
+    });
   }, []);
 
   return (

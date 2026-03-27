@@ -14,7 +14,7 @@ export const Footer = () => {
   const serviceArea = settings?.serviceArea?.split(',')[0] || 'Lumberton, TX'
   const facebookUrl = settings?.facebookPageUrl
   
-  const tagline = settings?.footerTagline || 'Professional lawn care services in Southeast Texas'
+  const tagline = settings?.footerTagline || 'Your neighbors in lawn care, right here in Southeast Texas'
   const contactTitle = settings?.footerContactTitle || 'Contact Us'
 
   return (

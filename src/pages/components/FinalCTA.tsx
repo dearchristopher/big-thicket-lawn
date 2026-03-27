@@ -14,8 +14,8 @@ export const FinalCTA = () => {
   const yearEstablished = settings?.yearEstablished || 2025
   const serviceArea = settings?.serviceArea?.split(',')[0] || 'Lumberton'
 
-  const title = ctaSection?.title || 'Ready for a Lawn You\'re Proud Of?'
-  const subtitle = ctaSection?.subtitle || 'Get your free quote in under 2 minutes. No obligation, no pressure; just honest pricing and great service.'
+  const title = ctaSection?.title || 'Let Us Take Care of Your Yard'
+  const subtitle = ctaSection?.subtitle || 'Get a free quote in a couple minutes. No strings attached.'
   const benefits = ctaSection?.benefits || defaultBenefits
   const primaryButtonText = ctaSection?.primaryButtonText || 'Get Your Free Quote'
   const secondaryButtonText = ctaSection?.secondaryButtonText || 'Call Us'

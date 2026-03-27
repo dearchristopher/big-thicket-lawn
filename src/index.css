@@ -1,21 +1,36 @@
 @import "tailwindcss";
-  
+
 @layer base, components, utilities;
 
-/* Base layer for default styles */
+@font-face {
+  font-family: 'Bungee Fallback';
+  src: local('Impact');
+  size-adjust: 105%;
+  ascent-override: 95%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Roboto Condensed Fallback';
+  src: local('Arial');
+  size-adjust: 93%;
+  ascent-override: 97%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+
 @layer base {
   :root {
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    
-    /* Custom font families with optimized fallbacks */
-    --font-decorative: 'Bungee', 'Impact', 'Arial Black', sans-serif;
-    --font-futura: 'Roboto Condensed', 'sans-serif';
+
+    --font-decorative: 'Bungee', 'Bungee Fallback', 'Impact', 'Arial Black', sans-serif;
+    --font-futura: 'Roboto Condensed', 'Roboto Condensed Fallback', 'Arial', sans-serif;
   }
   
-  /* Ensure fonts load with minimal layout shift */
   * {
     font-feature-settings: "kern" 1;
   }
@@ -30,32 +45,26 @@
     overflow-x: hidden;
   }
 
-  /* Only keep essential base styles that don't conflict with Tailwind */
   * {
     box-sizing: border-box;
   }
 }
 
-/* Custom font utility classes with layout shift prevention */
 @layer utilities {
   .font-decorative {
-    font-family: 'Bungee', 'Impact', 'Arial Black', sans-serif;
+    font-family: 'Bungee', 'Bungee Fallback', 'Impact', 'Arial Black', sans-serif;
   }
-  
+
   .font-main {
-    font-family: 'Roboto Condensed', 'sans-serif';
+    font-family: 'Roboto Condensed', 'Roboto Condensed Fallback', 'Arial', sans-serif;
   }
-  
-  /* Additional utility for preventing layout shift on large text */
+
   .font-stable {
     font-kerning: auto;
     text-rendering: optimizeLegibility;
     font-synthesis: none;
-    /* Prevent invisible text during font swap */
-    font-display: swap;
   }
-  
-  /* Size-adjust fallbacks to minimize layout shift */
+
   .text-stable {
     font-size-adjust: 0.5;
   }

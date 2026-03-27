@@ -18,28 +18,28 @@ const defaultReasons = [
     _id: 'default-1',
     iconName: 'home',
     title: 'Local & Family Owned',
-    description: "We're your neighbors in Lumberton. When you call, you speak directly with the owners, not a call center.",
+    description: "We live right here in Lumberton. You call us, you get us — not some 1-800 number.",
     highlight: 'Lumberton Based',
   },
   {
     _id: 'default-2',
     iconName: 'users',
     title: 'Owner-Operated Service',
-    description: "Todd, Hunter, and Terry personally handle your lawn care. The same friendly faces every time, no rotating crews.",
+    description: "Todd, Hunter, and Terry do the work themselves. You'll see the same guys every time.",
     highlight: 'Since 2018',
   },
   {
     _id: 'default-3',
     iconName: 'zap',
     title: 'Fast, Free Quotes',
-    description: "Get a quote the same day you reach out. No waiting, no hassle, just honest pricing upfront.",
+    description: "Text or call and we'll get back to you the same day with a straight-up price.",
     highlight: 'Same-Day Response',
   },
   {
     _id: 'default-4',
     iconName: 'shield',
     title: 'Satisfaction Guaranteed',
-    description: "Not happy with something? We'll make it right. Your satisfaction is our priority on every single visit.",
+    description: "If something doesn't look right, we'll come back and fix it. Simple as that.",
     highlight: '100% Guarantee',
   },
 ]
@@ -52,7 +52,7 @@ export const WhyChooseUsDynamic = () => {
 
   const badge = settings?.whyChooseUsBadge || 'Why Homeowners Choose Us'
   const title = settings?.whyChooseUsTitle || 'The Big Thicket Difference'
-  const subtitle = settings?.whyChooseUsSubtitle || "We're not a big franchise. We're your neighbors, and we treat your lawn like it's our own."
+  const subtitle = settings?.whyChooseUsSubtitle || "We're not a franchise. We're your neighbors."
   const footerText = settings?.whyChooseUsFooter || 'Supporting local business means supporting your community'
 
   if (loading) {

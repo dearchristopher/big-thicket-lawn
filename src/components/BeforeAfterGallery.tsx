@@ -6,42 +6,53 @@ export default function BeforeAfterGallery() {
   const { data: galleries, loading, error } = useAllGalleries()
   const { data: settings } = useSiteSettings()
   const [activeIndex, setActiveIndex] = useState(0)
-  const [sliderPositions, setSliderPositions] = useState<Record<string, number>>({})
-  const [isDragging, setIsDragging] = useState(false)
-  
+
   const containerRef = useRef<HTMLDivElement>(null)
+  const isDraggingRef = useRef(false)
+  const sliderPosRef = useRef(50)
 
   const title = settings?.galleryTitle || 'Recent Transformations'
   const subtitle = settings?.gallerySubtitle || 'See the difference professional lawn care makes'
 
-  const handleDragStart = useCallback((clientX: number) => {
-    setIsDragging(true)
-    updateSliderPosition(clientX)
-  }, [])
-
-  const handleDragMove = useCallback((clientX: number) => {
-    if (!isDragging) return
-    updateSliderPosition(clientX)
-  }, [isDragging])
-
-  const handleDragEnd = useCallback(() => {
-    setIsDragging(false)
-  }, [])
-
-  const updateSliderPosition = (clientX: number) => {
-    if (!containerRef.current || !galleries || !galleries[activeIndex]) return
+  const updateSliderPosition = useCallback((clientX: number) => {
+    if (!containerRef.current) return
     const rect = containerRef.current.getBoundingClientRect()
     const x = clientX - rect.left
     let percentage = Math.max(0, Math.min(100, (x / rect.width) * 100))
-    
     if (percentage < 5) percentage = 0
     else if (percentage > 95) percentage = 100
-    
-    const galleryId = galleries[activeIndex]._id
-    setSliderPositions(prev => ({
-      ...prev,
-      [galleryId]: percentage,
-    }))
+    sliderPosRef.current = percentage
+    containerRef.current.style.setProperty('--slider-pos', `${percentage}%`)
+  }, [])
+
+  const handleDragStart = useCallback((clientX: number) => {
+    isDraggingRef.current = true
+    updateSliderPosition(clientX)
+  }, [updateSliderPosition])
+
+  const handleDragMove = useCallback((clientX: number) => {
+    if (!isDraggingRef.current) return
+    updateSliderPosition(clientX)
+  }, [updateSliderPosition])
+
+  const handleDragEnd = useCallback(() => {
+    isDraggingRef.current = false
+  }, [])
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseInt(e.target.value)
+    sliderPosRef.current = val
+    if (containerRef.current) {
+      containerRef.current.style.setProperty('--slider-pos', `${val}%`)
+    }
+  }
+
+  const handleGalleryChange = (index: number) => {
+    setActiveIndex(index)
+    sliderPosRef.current = 50
+    if (containerRef.current) {
+      containerRef.current.style.setProperty('--slider-pos', '50%')
+    }
   }
 
   if (loading) {
@@ -60,22 +71,6 @@ export default function BeforeAfterGallery() {
   }
 
   const currentGallery = galleries[activeIndex]
-  const sliderPosition = sliderPositions[currentGallery._id] ?? 50
-
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSliderPositions({
-      ...sliderPositions,
-      [currentGallery._id]: parseInt(e.target.value),
-    })
-  }
-
-  const nextGallery = () => {
-    setActiveIndex((prev) => (prev + 1) % galleries.length)
-  }
-
-  const prevGallery = () => {
-    setActiveIndex((prev) => (prev - 1 + galleries.length) % galleries.length)
-  }
 
   return (
     <section id="gallery" className="py-16 bg-white border-y border-gray-200">
@@ -84,7 +79,7 @@ export default function BeforeAfterGallery() {
         <p className="text-gray-600 text-center mb-8">{subtitle}</p>
 
         <div className="relative">
-          <div 
+          <div
             ref={containerRef}
             className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-xl select-none"
             style={{ touchAction: 'pan-y' }}
@@ -96,6 +91,7 @@ export default function BeforeAfterGallery() {
                 alt={`${currentGallery.title} - After`}
                 className="w-full h-full object-cover pointer-events-none"
                 draggable={false}
+                loading="lazy"
               />
               <span className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded text-sm font-semibold pointer-events-none">
                 After
@@ -104,13 +100,14 @@ export default function BeforeAfterGallery() {
 
             <div
               className="absolute inset-0 overflow-hidden"
-              style={{clipPath: `inset(0 0 0 ${sliderPosition}%)`}}
+              style={{ clipPath: `inset(0 0 0 var(--slider-pos, 50%))` }}
             >
               <img
                 src={currentGallery.beforePhotoUrl}
                 alt={`${currentGallery.title} - Before`}
                 className="w-full h-full object-cover pointer-events-none"
                 draggable={false}
+                loading="lazy"
               />
               <span className="absolute top-4 right-4 bg-white/90 text-gray-800 px-3 py-1 rounded text-sm font-semibold pointer-events-none">
                 Before
@@ -121,7 +118,7 @@ export default function BeforeAfterGallery() {
               type="range"
               min="0"
               max="100"
-              value={sliderPosition}
+              defaultValue={50}
               onChange={handleSliderChange}
               className="hidden sm:block absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
               aria-label="Compare before and after"
@@ -129,13 +126,13 @@ export default function BeforeAfterGallery() {
 
             <div
               className="absolute top-0 bottom-0 w-8 -ml-4 bg-transparent z-20 cursor-ew-resize touch-none"
-              style={{left: `${sliderPosition}%`, touchAction: 'none'}}
+              style={{ left: `var(--slider-pos, 50%)`, touchAction: 'none' }}
               onMouseDown={(e) => {
                 e.preventDefault()
                 handleDragStart(e.clientX)
               }}
               onMouseMove={(e) => {
-                if (isDragging) {
+                if (isDraggingRef.current) {
                   e.preventDefault()
                   handleDragMove(e.clientX)
                 }
@@ -152,9 +149,7 @@ export default function BeforeAfterGallery() {
               }}
               onTouchEnd={handleDragEnd}
             >
-              {/* Visible line */}
               <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 bg-white shadow-lg" />
-              {/* Handle button - larger on mobile */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 sm:w-10 sm:h-10 bg-white rounded-full shadow-lg flex items-center justify-center pointer-events-none">
                 <div className="flex">
                   <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" />
@@ -177,19 +172,19 @@ export default function BeforeAfterGallery() {
           {galleries.length > 1 && (
             <div className="flex justify-center items-center mt-6 gap-4">
               <button
-                onClick={prevGallery}
+                onClick={() => handleGalleryChange((activeIndex - 1 + galleries.length) % galleries.length)}
                 className="p-2 rounded-full bg-white shadow hover:bg-gray-100 transition-colors"
                 aria-label="Previous project"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
-              
+
               <span className="text-gray-600">
                 {activeIndex + 1} / {galleries.length}
               </span>
-              
+
               <button
-                onClick={nextGallery}
+                onClick={() => handleGalleryChange((activeIndex + 1) % galleries.length)}
                 className="p-2 rounded-full bg-white shadow hover:bg-gray-100 transition-colors"
                 aria-label="Next project"
               >
@@ -203,7 +198,7 @@ export default function BeforeAfterGallery() {
               {galleries.map((gallery, index) => (
                 <button
                   key={gallery._id}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => handleGalleryChange(index)}
                   className={`w-3 h-3 rounded-full transition-colors ${
                     index === activeIndex ? 'bg-green-600' : 'bg-gray-300'
                   }`}

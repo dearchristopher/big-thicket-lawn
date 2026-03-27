@@ -23,12 +23,18 @@ export const HeaderV2 = () => {
   const navCtaText = settings?.navCtaText || 'Get Quote'
 
   useEffect(() => {
+    let ticking = false
     const handleScroll = () => {
-      const heroHeight = window.innerHeight
-      setShowLogo(window.scrollY > heroHeight * 0.5)
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        const heroHeight = window.innerHeight
+        setShowLogo(window.scrollY > heroHeight * 0.5)
+        ticking = false
+      })
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 

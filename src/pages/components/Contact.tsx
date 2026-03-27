@@ -9,7 +9,7 @@ export const Contact = () => {
     
     const title = settings?.contactTitle || 'GET IN TOUCH'
     const subtitle = settings?.contactSubtitle || 'Ready to chat?'
-    const description = settings?.contactDescription || "We're here to help with all your lawn care needs!"
+    const description = settings?.contactDescription || "Give us a holler — we'd love to hear from you."
     const callButtonText = settings?.contactCallButtonText || 'Call Us'
     const emailButtonText = settings?.contactEmailButtonText || 'Email Us'
     const footer = settings?.contactFooter || 'Family-owned & operated in Southeast Texas'

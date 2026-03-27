@@ -14,35 +14,35 @@ const defaultFAQs: FAQ[] = [
   {
     _id: 'default-1',
     question: 'How often should my lawn be mowed?',
-    answer: 'For most lawns in the Lumberton area, we recommend weekly mowing during the growing season (March-October) and bi-weekly during slower growth periods. However, this can vary based on grass type, weather, and your preferences. We can customize a schedule that works best for your lawn.',
+    answer: 'Weekly during growing season (March through October), every other week the rest of the year. We can adjust based on how your yard grows.',
     category: 'general',
     orderIndex: 1,
   },
   {
     _id: 'default-2',
     question: 'Do I need to be home during service?',
-    answer: "No, you don't need to be home. Many of our customers provide gate codes or leave gates unlocked. We respect your property and will ensure everything is secured when we leave. We'll also send you a message when the work is complete.",
+    answer: "Nope. Most folks just leave the gate unlocked or give us a code. We'll lock up when we're done and shoot you a text.",
     category: 'scheduling',
     orderIndex: 2,
   },
   {
     _id: 'default-3',
     question: 'What forms of payment do you accept?',
-    answer: 'We accept cash, checks, and all major credit cards. For recurring customers, we can set up automatic billing to make things even easier. Payment is due upon completion of service unless other arrangements have been made.',
+    answer: 'Cash, check, or card — whatever works for you. Recurring customers can set up auto-pay if they want.',
     category: 'payment',
     orderIndex: 3,
   },
   {
     _id: 'default-4',
     question: "What's included in a standard mowing service?",
-    answer: 'Our standard service includes professional mowing with commercial-grade equipment, precise edging along sidewalks and driveways, detailed trimming around obstacles and fence lines, and complete cleanup of all grass clippings. We leave your property looking neat and tidy.',
+    answer: 'Mowing, edging along sidewalks and driveways, trimming around obstacles and fences, and we clean up all the clippings before we leave.',
     category: 'services',
     orderIndex: 4,
   },
   {
     _id: 'default-5',
     question: 'Do you offer discounts for recurring service?',
-    answer: 'Yes! We offer discounted rates for weekly and bi-weekly recurring service. The more frequent the service, the better the rate. Contact us for a custom quote based on your specific needs and schedule.',
+    answer: 'Yep — weekly and bi-weekly customers get a better rate. Give us a call and we\'ll work out pricing for your yard.',
     category: 'pricing',
     orderIndex: 5,
   },
@@ -58,9 +58,9 @@ export const FAQSection = () => {
   
   const badge = settings?.faqBadge || 'Got Questions?'
   const title = settings?.faqTitle || 'Common Questions Answered'
-  const subtitle = settings?.faqSubtitle || 'Everything you need to know about our lawn care services'
+  const subtitle = settings?.faqSubtitle || 'The stuff people usually ask us'
   const ctaTitle = settings?.faqCtaTitle || 'Still have questions?'
-  const ctaText = settings?.faqCtaText || "We're happy to answer any questions you have. Give us a call or send a message."
+  const ctaText = settings?.faqCtaText || "Just give us a call or shoot us a text."
   const ctaButtonText = settings?.faqCtaButtonText || 'Call or Text'
 
   const faqs = faqData && faqData.length > 0 ? faqData : defaultFAQs

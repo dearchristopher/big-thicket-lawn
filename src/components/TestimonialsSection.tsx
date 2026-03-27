@@ -6,7 +6,7 @@ export default function TestimonialsSection() {
   const { data: settings } = useSiteSettings()
 
   const title = settings?.testimonialsTitle || 'What Our Customers Say'
-  const subtitle = settings?.testimonialsSubtitle || 'Real reviews from real customers in Lumberton, TX'
+  const subtitle = settings?.testimonialsSubtitle || 'From our neighbors right here in Lumberton'
 
   if (loading) {
     return (
@@ -95,7 +95,7 @@ export default function TestimonialsSection() {
             <span>Leave us a review on Google</span>
             <ExternalLink className="w-4 h-4" />
           </a>
-          <p className="text-gray-500 text-sm mt-2">Your feedback helps other homeowners find us!</p>
+          <p className="text-gray-500 text-sm mt-2">It helps other folks around here find us</p>
         </div>
       </div>
     </section>

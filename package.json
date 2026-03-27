@@ -12,7 +12,6 @@
     "test-email": "node test-email.js"
   },
   "dependencies": {
-    "@microsoft/clarity": "^1.0.0",
     "@sanity/client": "^7.16.0",
     "@sanity/image-url": "^2.0.3",
     "@tailwindcss/vite": "^4.1.11",
@@ -23,6 +22,7 @@
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "lucide-react": "^0.534.0",
+    "posthog-js": "^1.363.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.62.0",

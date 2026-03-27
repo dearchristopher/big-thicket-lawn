@@ -38,7 +38,7 @@ export const ReviewCTA = () => {
         </svg>
       ),
       url: googleReviewUrl || 'https://g.page/r/CVvxhi9Zv5amEBM/review',
-      description: 'Most helpful for local search - our top recommendation!',
+      description: 'Helps us the most — this is where locals find us',
       available: true,
     },
     {
@@ -79,10 +79,10 @@ export const ReviewCTA = () => {
             Love Your Lawn?
           </h2>
           <p className="text-xl text-green-100 mb-2 max-w-2xl mx-auto">
-            We&apos;d be honored if you&apos;d share your experience!
+            Mind leaving us a quick review?
           </p>
           <p className="text-green-200 mb-10 max-w-xl mx-auto">
-            Your review helps other homeowners in Southeast Texas discover quality lawn care they can trust.
+            It really helps other folks around here find us.
           </p>
 
           {/* Review Platform Cards - only show available platforms */}
@@ -153,7 +153,7 @@ export const ReviewCTA = () => {
                 Leave Us a Review
               </h3>
               <p className="text-gray-600">
-                Your feedback helps other homeowners find quality lawn care they can trust.
+                It helps other folks in the area find good lawn care.
                 <span className="block mt-1 text-sm text-green-600 font-medium">
                   Google reviews help us the most!
                 </span>
