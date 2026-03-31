@@ -92,6 +92,7 @@ export default function BeforeAfterGallery() {
                 className="w-full h-full object-cover pointer-events-none"
                 draggable={false}
                 loading="lazy"
+                decoding="async"
               />
               <span className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded text-sm font-semibold pointer-events-none">
                 After
@@ -108,6 +109,7 @@ export default function BeforeAfterGallery() {
                 className="w-full h-full object-cover pointer-events-none"
                 draggable={false}
                 loading="lazy"
+                decoding="async"
               />
               <span className="absolute top-4 right-4 bg-white/90 text-gray-800 px-3 py-1 rounded text-sm font-semibold pointer-events-none">
                 Before

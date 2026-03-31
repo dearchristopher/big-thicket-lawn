@@ -1,12 +1,8 @@
-// Component exports
-export {Header} from './Header'
 export {HeaderV2} from './HeaderV2'
 export {Footer} from './Footer'
 export {TrustBar} from './TrustBar'
 export {FloatingCTA} from './FloatingCTA'
 export {EstimateModal} from './EstimateModal'
 export {Modal} from './Modal'
-export {default as BigThicketLogo} from './BigThicketLogo'
-export {default as Logo} from './Logo'
 export {default as BeforeAfterGallery} from './BeforeAfterGallery'
 export {default as TestimonialsSection} from './TestimonialsSection'

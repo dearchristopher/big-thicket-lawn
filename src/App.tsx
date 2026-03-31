@@ -8,6 +8,7 @@ import { Footer } from "./components/Footer";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { EstimateModalProvider } from "./contexts/EstimateModalContext";
+import { SiteSettingsProvider } from "./contexts/SiteSettingsContext";
 
 export default function App() {
   useEffect(() => {
@@ -19,6 +20,7 @@ export default function App() {
 
   return (
     <EstimateModalProvider>
+      <SiteSettingsProvider>
       <div className="min-h-screen bg-green-50">
         <Analytics />
         <SpeedInsights />
@@ -30,6 +32,7 @@ export default function App() {
         </Routes>
         <Footer />
       </div>
+      </SiteSettingsProvider>
     </EstimateModalProvider>
   );
 }

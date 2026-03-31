@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
-import {sanityClient, queries, type Testimonial, type PhotoGallery, type Service, type SiteSettings, type FacebookImport, type FAQ, type PricingTier, type WhyChooseUsItem, type CTASection} from '../lib/sanity'
+import {sanityClient, queries, type Testimonial, type PhotoGallery, type Service, type FacebookImport, type FAQ, type PricingTier, type WhyChooseUsItem, type CTASection} from '../lib/sanity'
+import { useSiteSettingsContext } from '../contexts/SiteSettingsContext'
 
 // Generic hook for fetching any Sanity query
 export function useSanityQuery<T>(query: string) {
@@ -48,7 +49,7 @@ export function useActiveServices() {
 }
 
 export function useSiteSettings() {
-  return useSanityQuery<SiteSettings>(queries.siteSettings)
+  return useSiteSettingsContext()
 }
 
 export function usePendingFacebookImports() {

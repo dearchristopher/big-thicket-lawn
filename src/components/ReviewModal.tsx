@@ -44,7 +44,7 @@ export const ReviewModal = ({ isOpen, onClose }: ReviewModalProps) => {
   if (!isOpen) return null
 
   const hasFacebook = !!facebookUrl
-  const hasGoogle = true // Google is always available with fallback URL
+  const hasGoogle = false // Google Business Profile suspended for verification
   const hasYelp = true // Yelp is always available with fallback URL
 
   return (
@@ -92,7 +92,7 @@ export const ReviewModal = ({ isOpen, onClose }: ReviewModalProps) => {
             We&apos;d be honored if you&apos;d share your experience!
           </p>
           <p className="text-yellow-300 text-sm mt-1 font-medium">
-            Google reviews help others decide to work with us!
+            Your reviews help others decide to work with us!
           </p>
         </div>
 

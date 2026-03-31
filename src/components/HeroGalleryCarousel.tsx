@@ -236,6 +236,7 @@ export const HeroGalleryCarousel = () => {
             className="w-full h-full object-cover pointer-events-none"
             draggable={false}
             onLoad={() => handleImageLoad(currentGallery.afterPhotoUrl)}
+            decoding="async"
           />
           <span className="absolute top-3 left-3 bg-green-600 text-white px-2 py-1 rounded text-xs font-bold pointer-events-none">
             After
@@ -252,6 +253,7 @@ export const HeroGalleryCarousel = () => {
             className="w-full h-full object-cover pointer-events-none"
             draggable={false}
             onLoad={() => handleImageLoad(currentGallery.beforePhotoUrl)}
+            decoding="async"
           />
           <span className="absolute top-3 right-3 bg-white/90 text-gray-800 px-2 py-1 rounded text-xs font-bold pointer-events-none">
             Before

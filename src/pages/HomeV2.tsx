@@ -12,6 +12,7 @@ import { ReviewCTA } from '../components/ReviewCTA'
 import { ReviewModal } from '../components/ReviewModal'
 import { FloatingCTA } from '../components/FloatingCTA'
 import { useReviewMode } from '../hooks/useReviewMode'
+import { ErrorBoundary } from '../components/ErrorBoundary'
 
 export default function HomeV2() {
   const isReviewMode = useReviewMode()
@@ -34,20 +35,20 @@ export default function HomeV2() {
   return (
     <div className="min-h-screen">
       <HeroV2 onOpenReviewModal={openReviewModal} />
-      <TrustBar />
-      <PricingV2 />
-      <BeforeAfterGallery />
-      <WhyChooseUsDynamic />
-      <ServicesDynamic />
-      <TestimonialsSection />
-      <FAQSection />
+      <ErrorBoundary><TrustBar /></ErrorBoundary>
+      <ErrorBoundary><ServicesDynamic /></ErrorBoundary>
+      <ErrorBoundary><PricingV2 /></ErrorBoundary>
+      <ErrorBoundary><BeforeAfterGallery /></ErrorBoundary>
+      <ErrorBoundary><WhyChooseUsDynamic /></ErrorBoundary>
+      <ErrorBoundary><TestimonialsSection /></ErrorBoundary>
+      <ErrorBoundary><FAQSection /></ErrorBoundary>
       {/* <ContactLayout>
         <Contact />
       </ContactLayout> */}
-      
+
       {/* In review mode: show prominent ReviewCTA (includes quote CTAs) */}
       {/* In normal mode: show FinalCTA (ReviewCTA is embedded in TestimonialsSection) */}
-      {isReviewMode ? <ReviewCTA /> : <FinalCTA />}
+      {isReviewMode ? <ErrorBoundary><ReviewCTA /></ErrorBoundary> : <ErrorBoundary><FinalCTA /></ErrorBoundary>}
       
       <FloatingCTA />
 
