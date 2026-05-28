@@ -1,5 +1,5 @@
 import { useFeaturedTestimonials, useSiteSettings } from '../hooks/useSanity'
-import { Star, ExternalLink } from 'lucide-react'
+import { Star, ExternalLink, Facebook } from 'lucide-react'
 
 export default function TestimonialsSection() {
   const { data: testimonials, loading, error } = useFeaturedTestimonials()
@@ -7,6 +7,12 @@ export default function TestimonialsSection() {
 
   const title = settings?.testimonialsTitle || 'What Our Customers Say'
   const subtitle = settings?.testimonialsSubtitle || 'From our neighbors right here in Lumberton'
+
+  // Google review collection is unavailable (GBP verification failed) — route to the working channel.
+  const facebookUrl = settings?.facebookPageUrl
+  const yelpReviewUrl = settings?.yelpReviewUrl || 'https://www.yelp.com/writeareview/biz/qNkwDerKkc65IunGPwy4gg'
+  const reviewHref = facebookUrl ? `${facebookUrl}/reviews` : yelpReviewUrl
+  const reviewLabel = facebookUrl ? 'Leave us a review on Facebook' : 'Leave us a review on Yelp'
 
   if (loading) {
     return (
@@ -83,16 +89,16 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        {/* Leave a Review CTA - Google only for simplicity */}
+        {/* Leave a Review CTA */}
         <div className="mt-10 text-center">
           <a
-            href={settings?.googleReviewUrl || 'https://g.page/r/CVvxhi9Zv5amEBM/review'}
+            href={reviewHref}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"
           >
-            <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
-            <span>Leave us a review on Google</span>
+            {facebookUrl ? <Facebook className="w-5 h-5" /> : <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />}
+            <span>{reviewLabel}</span>
             <ExternalLink className="w-4 h-4" />
           </a>
           <p className="text-gray-500 text-sm mt-2">It helps other folks around here find us</p>

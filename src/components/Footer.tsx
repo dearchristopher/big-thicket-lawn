@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { FooterMower } from './HeaderMower'
 import { MowerTreeIcon } from './icons/MowerTree'
-import { Heart, Mail, Phone, TreeDeciduous, Clock, Facebook, MapPin } from 'lucide-react'
+import { Heart, Mail, Phone, TreeDeciduous, Clock, Facebook, Star } from 'lucide-react'
 import { useSiteSettings } from '../hooks/useSanity'
 
 export const Footer = () => {
@@ -13,7 +13,11 @@ export const Footer = () => {
   const hours = settings?.businessHours || 'Mon-Fri: 8am-6pm, Sat: 8am-2pm'
   const serviceArea = settings?.serviceArea?.split(',')[0] || 'Lumberton, TX'
   const facebookUrl = settings?.facebookPageUrl
-  
+  // Google review collection is unavailable (GBP verification failed) — route to the working channel.
+  const yelpReviewUrl = settings?.yelpReviewUrl || 'https://www.yelp.com/writeareview/biz/qNkwDerKkc65IunGPwy4gg'
+  const reviewHref = facebookUrl ? `${facebookUrl}/reviews` : yelpReviewUrl
+  const reviewNetwork = facebookUrl ? 'Facebook' : 'Yelp'
+
   const tagline = settings?.footerTagline || 'Your neighbors in lawn care, right here in Southeast Texas'
   const contactTitle = settings?.footerContactTitle || 'Contact Us'
 
@@ -108,15 +112,15 @@ export const Footer = () => {
               )}
               <p className="flex items-center justify-center md:justify-start gap-2">
                 <span className="text-green-300">
-                  <MapPin className="h-4 w-4" />
+                  <Star className="h-4 w-4" />
                 </span>
                 <a
-                  href="https://g.page/r/CVvxhi9Zv5amEBM/review"
+                  href={reviewHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-green-200 hover:text-white transition-colors"
                 >
-                  Review us on Google
+                  Review us on {reviewNetwork}
                 </a>
               </p>
             </div>
