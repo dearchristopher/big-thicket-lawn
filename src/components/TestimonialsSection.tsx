@@ -1,5 +1,43 @@
 import { useFeaturedTestimonials, useSiteSettings } from '../hooks/useSanity'
 import { Star, ExternalLink, Facebook } from 'lucide-react'
+import type { Testimonial } from '../lib/sanity'
+
+// Shown when Sanity returns nothing (empty, or a preview deploy blocked by CORS).
+// These are real featured reviews so the section never collapses to blank.
+const DEFAULT_TESTIMONIALS: Testimonial[] = [
+  {
+    _id: 'fallback-chauvin',
+    _type: 'testimonial',
+    customerName: 'Chauvin',
+    rating: 5,
+    quote:
+      'Oh my gosh!! I told them, but man. Todd & Hunter are awesome workers!!!! Yard looks clean & professional now. Not to mention they gave me info abt what else they can do to help my yard. Pros!!!!',
+    isFeatured: true,
+    fromFacebook: false,
+  },
+  {
+    _id: 'fallback-meagan',
+    _type: 'testimonial',
+    customerName: 'Meagan S.',
+    rating: 5,
+    serviceType: 'landscaping',
+    quote:
+      'Big Thicket Lawn Service did a thorough, detail-oriented job on our landscaping. They took the time to educate us on what needed to be done and why, which we really appreciated. Everything was cleared, hauled away, and cleaned up properly, and the entire project was completed in one day. Professional, efficient, knowledgeable, and fairly priced. Highly recommend.',
+    isFeatured: true,
+    fromFacebook: false,
+  },
+  {
+    _id: 'fallback-cheree',
+    _type: 'testimonial',
+    customerName: 'Cheree K.',
+    rating: 5,
+    serviceType: 'lawn-mowing',
+    quote:
+      "Excellent communication! My yard looks great! I've been through several different lawn companies and Big Thicket is by far the Best!",
+    isFeatured: true,
+    fromFacebook: false,
+  },
+]
 
 export default function TestimonialsSection() {
   const { data: testimonials, loading, error } = useFeaturedTestimonials()
@@ -33,12 +71,10 @@ export default function TestimonialsSection() {
 
   if (error) {
     console.error('Error loading testimonials:', error)
-    return null
   }
 
-  if (!testimonials || testimonials.length === 0) {
-    return null
-  }
+  // Fall back to real featured reviews when Sanity returns nothing (empty or blocked origin).
+  const items = testimonials && testimonials.length > 0 ? testimonials : DEFAULT_TESTIMONIALS
 
   return (
     <section id="reviews" className="py-16 bg-gray-50">
@@ -47,7 +83,7 @@ export default function TestimonialsSection() {
         <p className="text-gray-600 text-center mb-12">{subtitle}</p>
         
         <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
+          {items.map((testimonial) => (
             <div key={testimonial._id} className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-center mb-4">
                 {testimonial.photoUrl ? (

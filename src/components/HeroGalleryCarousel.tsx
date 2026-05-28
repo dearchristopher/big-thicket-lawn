@@ -1,6 +1,36 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useFeaturedGalleries } from '../hooks/useSanity'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
+import type { PhotoGallery } from '../lib/sanity'
+
+// Shown when Sanity returns no galleries (empty, or a preview deploy blocked by CORS).
+// These are real featured before/afters so the hero slider never silently disappears.
+const DEFAULT_GALLERIES: PhotoGallery[] = [
+  {
+    _id: 'fallback-major-trimming',
+    _type: 'photoGallery',
+    title: 'Major Trimming & Removal',
+    beforePhotoUrl:
+      'https://photos.smugmug.com/Other/Big-Thicket-Hosting/i-hvDPXD3/0/LBMj4B8Q2Jgr9TTv2WmZDKM7bPPx7qhRqj9sXXRgL/4K/IMG_0489-4K.jpg',
+    afterPhotoUrl:
+      'https://photos.smugmug.com/Other/Big-Thicket-Hosting/i-z5kRVHg/0/NWdQjtkpLTW2NJzgFZ99jQQcrHChRDtVhTrpTkgg3/4K/IMG_3707-4K.jpg',
+    category: 'seasonal-cleanup',
+    isFeatured: true,
+    fromFacebook: false,
+  },
+  {
+    _id: 'fallback-cleanup',
+    _type: 'photoGallery',
+    title: 'Cleanup',
+    beforePhotoUrl:
+      'https://photos.smugmug.com/Other/Big-Thicket-Hosting/i-XSVQXbZ/1/KqkqFg5RQJh4JXjxvnZkZPkPsxdr9z2XGVtDhvXH3/O/IMG_2511.jpg',
+    afterPhotoUrl:
+      'https://photos.smugmug.com/Other/Big-Thicket-Hosting/i-93HSJX9/0/MHZPgCzF5gcpqMhjhjXkcc6Q2S4Nx7459Wj7rQsPt/O/IMG_2507.jpg',
+    category: 'seasonal-cleanup',
+    isFeatured: true,
+    fromFacebook: false,
+  },
+]
 
 export const HeroGalleryCarousel = () => {
   const { data: galleries } = useFeaturedGalleries()
@@ -21,7 +51,7 @@ export const HeroGalleryCarousel = () => {
     (g) => g.beforePhotoUrl && g.afterPhotoUrl
   ) || []
 
-  const validGalleries = sanityGalleries.length > 0 ? sanityGalleries : []
+  const validGalleries = sanityGalleries.length > 0 ? sanityGalleries : DEFAULT_GALLERIES
 
   const handleImageLoad = useCallback((imageUrl: string) => {
     setLoadedImages(prev => {
