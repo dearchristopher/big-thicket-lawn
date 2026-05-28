@@ -24,7 +24,7 @@ export default defineType({
       name: 'highlight',
       title: 'Highlight Badge',
       type: 'string',
-      description: 'Short badge text, e.g., "Lumberton Based", "Since 2018"',
+      description: 'Short badge text, e.g., "Lumberton Based", "Family Run"',
     }),
     defineField({
       name: 'iconName',

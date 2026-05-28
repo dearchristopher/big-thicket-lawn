@@ -26,7 +26,7 @@ const defaultReasons = [
     iconName: 'users',
     title: 'Owner-Operated Service',
     description: "Todd, Hunter, and Terry do the work themselves. You'll see the same guys every time.",
-    highlight: 'Since 2018',
+    highlight: 'Family Run',
   },
   {
     _id: 'default-3',

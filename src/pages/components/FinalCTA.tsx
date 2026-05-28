@@ -11,7 +11,6 @@ export const FinalCTA = () => {
 
   const phone = settings?.phoneNumber || '(409) 719-3979'
   const phoneHref = phone.replace(/\D/g, '')
-  const yearEstablished = settings?.yearEstablished || 2018
   const serviceArea = settings?.serviceArea?.split(',')[0] || 'Lumberton'
 
   const title = ctaSection?.title || 'Let Us Take Care of Your Yard'
@@ -19,7 +18,7 @@ export const FinalCTA = () => {
   const benefits = ctaSection?.benefits || defaultBenefits
   const primaryButtonText = ctaSection?.primaryButtonText || 'Get Your Free Quote'
   const secondaryButtonText = ctaSection?.secondaryButtonText || 'Call Us'
-  const footerText = ctaSection?.footerText || `Serving ${serviceArea} and surrounding areas since ${yearEstablished}`
+  const footerText = ctaSection?.footerText || `Serving ${serviceArea} and surrounding areas`
 
   return (
     <section className="py-16 md:py-24 bg-gradient-to-br from-blue-500 to-blue-900 text-white">
