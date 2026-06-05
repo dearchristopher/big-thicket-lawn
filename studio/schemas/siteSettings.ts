@@ -37,7 +37,7 @@ export default defineType({
       title: 'Year Established',
       type: 'number',
       description: 'For "Serving since XXXX" text',
-      initialValue: 2018,
+      initialValue: 2025,
     }),
     
     // Hero Section

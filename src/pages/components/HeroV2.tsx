@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useSiteSettings } from '../../hooks/useSanity'
 import { Phone, MessageCircle, Star } from 'lucide-react'
-import { useIsMobile } from '../../hooks/useIsMobile'
 import { Bar } from './bar'
 import { EstimateModal } from '../../components/EstimateModal'
 import { useEstimateModal } from '../../hooks/useEstimateModal'
@@ -16,7 +15,6 @@ interface HeroV2Props {
 
 export const HeroV2 = ({ onOpenReviewModal }: HeroV2Props) => {
   const navigate = useNavigate()
-  const isMobile = useIsMobile()
   const { data: settings } = useSiteSettings()
   const { isEstimateModalOpen, closeEstimateModal } = useEstimateModal()
 
@@ -28,7 +26,7 @@ export const HeroV2 = ({ onOpenReviewModal }: HeroV2Props) => {
   return (
     <div className="relative min-h-screen flex items-center justify-center py-12">
       <img
-        src={settings?.heroImageUrl || '/images/lawn-placeholder.png'}
+        src={settings?.heroImageUrl || '/images/lawn-placeholder.webp'}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
         fetchPriority="high"
@@ -79,15 +77,13 @@ export const HeroV2 = ({ onOpenReviewModal }: HeroV2Props) => {
             Get Your Free Quote
           </button>
 
-          <button
-            onClick={() =>
-              isMobile ? (window.location.href = `tel:${phoneHref}`) : navigate('#contact')
-            }
+          <a
+            href={`tel:${phoneHref}`}
             className="w-full sm:w-auto cursor-pointer bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2"
           >
             <Phone className="w-4 h-4" />
             Call {phone}
-          </button>
+          </a>
 
           {/* Review Button - Ghost Variant */}
           {onOpenReviewModal && (
